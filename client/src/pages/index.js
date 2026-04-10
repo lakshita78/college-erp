@@ -1,0 +1,9 @@
+export { default as DashboardPage } from './DashboardPage';
+export { default as UsersPage } from './UsersPage';
+export { default as OrdersPage } from './OrdersPage';
+export { default as ProductsPage } from './ProductsPage';
+export { default as ReportsPage } from './ReportsPage';
+export { default as LandingPage } from './LandingPage';
+export { default as AdminDashboard } from './AdminDashboard';
+export { default as StudentDashboard } from './StudentDashboard';
+export { default as FacultyDashboard } from './FacultyDashboard';

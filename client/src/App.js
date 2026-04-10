@@ -1,5 +1,25 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+
+// New UI Components (Dark Theme)
+import {
+  DashboardPage,
+  UsersPage,
+  OrdersPage,
+  ProductsPage,
+  ReportsPage,
+  LandingPage,
+  AdminDashboard,
+  StudentDashboard,
+  FacultyDashboard,
+} from "./pages";
+
+// New Login Components (Dark Theme)
+import AdminLoginNew from "./components/login/AdminLoginNew";
+import FacultyLoginNew from "./components/login/FacultyLoginNew";
+import StudentLoginNew from "./components/login/StudentLoginNew";
+
+// Existing Components
 import AddAdmin from "./components/admin/addAdmin/AddAdmin";
 import AddDepartment from "./components/admin/addDepartment/AddDepartment";
 import AddFaculty from "./components/admin/addFaculty/AddFaculty";
@@ -46,12 +66,21 @@ import CreateNotice from "./components/admin/createNotice/CreateNotice";
 const App = () => {
   return (
     <Routes>
-      <Route exact path="/" element={<Login />} />
+      <Route exact path="/" element={<LandingPage />} />
+
+      {/* New Dark Theme Login Routes */}
+      <Route path="/login/adminlogin" element={<AdminLoginNew />} />
+      <Route path="/login/facultylogin" element={<FacultyLoginNew />} />
+      <Route path="/login/studentlogin" element={<StudentLoginNew />} />
+
+      {/* Legacy Routes (commented out - remove comment to use old UI) */}
+      {/* <Route path="/login/adminlogin" element={<AdminLogin />} /> */}
+      {/* <Route path="/login/facultylogin" element={<FacultyLogin />} /> */}
+      {/* <Route path="/login/studentlogin" element={<StudentLogin />} /> */}
 
       {/* Admin  */}
-
-      <Route path="/login/adminlogin" element={<AdminLogin />} />
-      <Route path="/admin/home" element={<AdminHome />} />
+      <Route path="/admin/home" element={<AdminDashboard />} />
+      {/* Legacy AdminHome: <Route path="/admin/home" element={<AdminHome />} /> */}
       <Route path="/admin/profile" element={<AdminProfile />} />
       <Route path="/admin/update" element={<AdminUpdate />} />
       <Route path="/admin/update/password" element={<AdminPassword />} />
@@ -75,9 +104,7 @@ const App = () => {
       <Route path="/admin/allstudent" element={<GetStudent />} />
 
       {/* Faculty  */}
-
-      <Route path="/login/facultylogin" element={<FacultyLogin />} />
-      <Route path="/faculty/home" element={<FacultyHome />} />
+      <Route path="/faculty/home" element={<FacultyDashboard />} />
       <Route path="/faculty/password" element={<FacultyFirstTimePassword />} />
       <Route path="/faculty/profile" element={<FacultyProfile />} />
       <Route path="/faculty/update" element={<FacultyUpdate />} />
@@ -87,9 +114,7 @@ const App = () => {
       <Route path="/faculty/markattendance" element={<MarkAttendance />} />
 
       {/* Student  */}
-
-      <Route path="/login/studentlogin" element={<StudentLogin />} />
-      <Route path="/student/home" element={<StudentHome />} />
+      <Route path="/student/home" element={<StudentDashboard />} />
       <Route path="/student/password" element={<StudentFirstTimePassword />} />
       <Route path="/student/profile" element={<StudentProfile />} />
       <Route path="/student/update" element={<StudentUpdate />} />
@@ -97,6 +122,13 @@ const App = () => {
       <Route path="/student/subjectlist" element={<SubjectList />} />
       <Route path="/student/testresult" element={<TestResult />} />
       <Route path="/student/attendance" element={<Attendance />} />
+
+      {/* New UI Routes (Dark Theme) - Demo Pages */}
+      <Route path="/newui/dashboard" element={<DashboardPage />} />
+      <Route path="/newui/users" element={<UsersPage />} />
+      <Route path="/newui/orders" element={<OrdersPage />} />
+      <Route path="/newui/products" element={<ProductsPage />} />
+      <Route path="/newui/reports" element={<ReportsPage />} />
     </Routes>
   );
 };
