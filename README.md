@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🎓 College ERP
 
 A comprehensive **College ERP (Enterprise Resource Planning)** system built with the MERN stack, featuring a modern dual-themed UI for managing academic operations efficiently.
@@ -193,3 +194,7 @@ https://user-images.githubusercontent.com/90241373/156794428-1a73579c-8116-45dd-
 
 ### Student Dashboard
 https://user-images.githubusercontent.com/90241373/156794474-2ba1d10e-30c8-4ce7-881b-520d7ab6aec6.mp4
+=======
+# college-erp
+College ERP - Modern Educational Management System A comprehensive College ERP (Enterprise Resource Planning) system built with the MERN stack, featuring a modern dual-themed UI for managing academic operations efficiently.
+>>>>>>> 2f09030cc42c5b696f79427d21f00b5fd67e07e5
