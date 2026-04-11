@@ -16,7 +16,7 @@ const StatCard = ({
   const getChangeColor = () => {
     if (changeType === 'positive') return 'text-emerald-400';
     if (changeType === 'negative') return 'text-rose-400';
-    return 'text-content-muted';
+    return 'text-gray-600 dark:text-gray-400';
   };
 
   const getTrendIcon = () => {
@@ -55,8 +55,8 @@ const StatCard = ({
       <div className="relative">
         <div className="flex items-start justify-between">
           <div>
-            <p className="text-sm font-medium text-content-muted">{title}</p>
-            <h3 className="text-2xl lg:text-3xl font-bold text-content mt-2">
+            <p className="text-sm font-medium text-gray-600 dark:text-gray-400">{title}</p>
+            <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mt-2">
               {prefix}{value}{suffix}
             </h3>
           </div>
@@ -78,7 +78,7 @@ const StatCard = ({
                 </span>
               )}
             </div>
-            <span className="text-sm text-content-muted">
+            <span className="text-sm text-gray-600 dark:text-gray-400">
               vs last month
             </span>
           </div>

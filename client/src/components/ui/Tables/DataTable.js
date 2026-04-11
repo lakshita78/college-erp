@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import {
   ChevronDown,
   ChevronUp,
@@ -11,6 +11,10 @@ import {
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
+  Eye,
+  Edit2,
+  Trash2,
+  ExternalLink,
 } from 'lucide-react';
 import Button from '../Common/Button';
 import Badge from '../Common/Badge';
@@ -41,6 +45,19 @@ const DataTable = ({
   const [itemsPerPage, setItemsPerPage] = useState(pageSize);
   const [selectedRows, setSelectedRows] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
+  const [activeActionRow, setActiveActionRow] = useState(null);
+  const dropdownRef = useRef(null);
+
+  // Close dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setActiveActionRow(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Sorting
   const handleSort = (key) => {
@@ -148,21 +165,21 @@ const DataTable = ({
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             {title && (
               <div>
-                <h3 className="text-lg font-semibold text-content">{title}</h3>
-                {subtitle && <p className="text-sm text-content-muted">{subtitle}</p>}
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h3>
+                {subtitle && <p className="text-sm text-gray-600 dark:text-gray-400">{subtitle}</p>}
               </div>
             )}
 
             <div className="flex items-center gap-2">
               {searchable && (
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-content-muted dark:text-content-dark-muted" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400" />
                   <input
                     type="text"
                     placeholder="Search..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-9 pr-4 py-2 bg-light-100 dark:bg-dark-700 border border-light-600 dark:border-dark-600 rounded-xl text-sm text-content dark:text-content-dark placeholder-content-muted dark:placeholder-content-dark-muted focus:outline-none focus:border-primary-500 transition-all w-64"
+                    className="pl-9 pr-4 py-2 bg-light-100 dark:bg-dark-700 border border-light-600 dark:border-dark-600 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:border-primary-500 transition-all w-64"
                   />
                 </div>
               )}
@@ -198,7 +215,7 @@ const DataTable = ({
       {/* Table */}
       <div className="overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-light-100 dark:bg-dark-700/50">
+          <thead className="bg-primary-600">
             <tr>
               {selectable && (
                 <th className="px-4 py-3 w-12">
@@ -206,22 +223,26 @@ const DataTable = ({
                     type="checkbox"
                     checked={selectedRows.length === paginatedData.length && paginatedData.length > 0}
                     onChange={handleSelectAll}
-                    className="w-4 h-4 rounded border-light-500 dark:border-dark-500 bg-light-100 dark:bg-dark-700 text-primary-500 focus:ring-primary-500"
+                    className="w-4 h-4 rounded border-primary-400 bg-white/10 text-white focus:ring-primary-500"
                   />
                 </th>
               )}
               {columns.map((col) => (
                 <th
                   key={col.key}
-                  className={`px-4 py-3 text-left text-xs font-semibold text-content-muted uppercase tracking-wider ${
-                    col.sortable !== false ? 'cursor-pointer hover:text-content' : ''
+                  className={`px-4 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider ${
+                    col.sortable !== false ? 'cursor-pointer hover:bg-primary-700' : ''
                   }`}
                   onClick={() => col.sortable !== false && handleSort(col.key)}
                   style={{ width: col.width }}
                 >
                   <div className="flex items-center gap-1">
                     {col.header}
-                    {col.sortable !== false && getSortIcon(col.key)}
+                    {col.sortable !== false && (
+                      <div className="text-white/70">
+                        {getSortIcon(col.key)}
+                      </div>
+                    )}
                   </div>
                 </th>
               ))}
@@ -245,8 +266,8 @@ const DataTable = ({
               <tr>
                 <td colSpan={columns.length + (selectable ? 2 : 1)} className="px-4 py-12 text-center">
                   {EmptyState || (
-                    <div className="text-content-muted">
-                      <p className="text-lg font-medium">No data available</p>
+                    <div className="text-gray-600 dark:text-gray-400">
+                      <p className="text-lg font-medium text-gray-900 dark:text-white">No data available</p>
                       <p className="text-sm mt-1">Try adjusting your filters or search query</p>
                     </div>
                   )}
@@ -259,9 +280,9 @@ const DataTable = ({
                   onClick={() => onRowClick?.(row)}
                   className={`
                     transition-colors duration-150
-                    ${onRowClick ? 'cursor-pointer hover:bg-light-200 dark:hover:bg-dark-700/50' : 'hover:bg-light-100 dark:hover:bg-dark-700/30'}
+                    ${onRowClick ? 'cursor-pointer hover:bg-primary-50 dark:hover:bg-dark-700/50' : 'hover:bg-primary-50 dark:hover:bg-dark-700/30'}
                     ${selectedRows.includes(row.id) ? 'bg-primary-500/5' : ''}
-                    ${index % 2 === 1 ? 'bg-light-100 dark:bg-dark-800/50' : ''}
+                    ${index % 2 === 1 ? 'bg-slate-50 dark:bg-dark-800/50' : ''}
                   `}
                 >
                   {selectable && (
@@ -279,14 +300,66 @@ const DataTable = ({
                       {col.render ? (
                         col.render(row[col.key], row)
                       ) : (
-                        <span className="text-sm text-content">{row[col.key]}</span>
+                        <span className="text-sm text-gray-900 dark:text-white">{row[col.key]}</span>
                       )}
                     </td>
                   ))}
-                  <td className="px-4 py-4">
-                    <button className="p-2 rounded-lg hover:bg-dark-600 text-content-muted hover:text-content transition-colors">
+                  <td className="px-4 py-4 relative" onClick={(e) => e.stopPropagation()}>
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveActionRow(activeActionRow === index ? null : index);
+                      }}
+                      className={`p-2 rounded-lg transition-all transform hover:scale-110 active:scale-95 ${
+                        activeActionRow === index 
+                          ? 'bg-primary-600 text-white shadow-lg rotate-90' 
+                          : 'hover:bg-primary-100 dark:hover:bg-dark-600 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                      }`}
+                      title="More Actions"
+                    >
                       <MoreHorizontal className="w-4 h-4" />
                     </button>
+
+                    {/* Actions Dropdown */}
+                    {activeActionRow === index && (
+                      <div 
+                        ref={dropdownRef}
+                        className="absolute right-12 top-0 mt-2 w-48 bg-white dark:bg-dark-800 rounded-xl shadow-2xl border border-light-600 dark:border-dark-600 z-50 py-2 animate-in fade-in zoom-in duration-200"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <div className="px-3 py-2 border-b border-light-600 dark:border-dark-600 mb-1">
+                          <p className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Row Actions</p>
+                        </div>
+                        <button 
+                          onClick={() => {
+                            setActiveActionRow(null);
+                            onRowClick?.(row, 'view');
+                          }}
+                          className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-primary-50 dark:hover:bg-dark-700 hover:text-primary-600 transition-colors"
+                        >
+                          <Eye className="w-4 h-4" /> View Details
+                        </button>
+                        <button 
+                          onClick={() => {
+                            setActiveActionRow(null);
+                            onRowClick?.(row, 'edit');
+                          }}
+                          className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-primary-50 dark:hover:bg-dark-700 hover:text-primary-600 transition-colors"
+                        >
+                          <Edit2 className="w-4 h-4" /> Edit Record
+                        </button>
+                        <div className="my-1 border-t border-light-600 dark:border-dark-600" />
+                        <button 
+                          onClick={() => {
+                            setActiveActionRow(null);
+                            onRowClick?.(row, 'delete');
+                          }}
+                          className="w-full flex items-center gap-2 px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20 transition-colors"
+                        >
+                          <Trash2 className="w-4 h-4" /> Delete Row
+                        </button>
+                      </div>
+                    )}
                   </td>
                 </tr>
               ))
@@ -310,7 +383,7 @@ const DataTable = ({
                 setItemsPerPage(Number(e.target.value));
                 setCurrentPage(1);
               }}
-              className="px-2 py-1 bg-dark-700 border border-dark-600 rounded-lg text-sm text-content focus:outline-none focus:border-primary-500"
+              className="px-2 py-1 bg-light-100 dark:bg-dark-700 border border-light-600 dark:border-dark-600 rounded-lg text-sm text-gray-900 dark:text-white focus:outline-none focus:border-primary-500"
             >
               {pageSizeOptions.map((size) => (
                 <option key={size} value={size}>{size} / page</option>
@@ -357,7 +430,7 @@ const DataTable = ({
                       w-8 h-8 rounded-lg text-sm font-medium transition-colors
                       ${currentPage === pageNum
                         ? 'bg-primary-500 text-white'
-                        : 'hover:bg-dark-700 text-content-muted hover:text-content'
+                        : 'hover:bg-primary-50 dark:hover:bg-dark-700 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                       }
                     `}
                   >

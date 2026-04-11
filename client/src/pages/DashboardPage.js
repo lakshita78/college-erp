@@ -103,8 +103,8 @@ const DashboardPage = () => {
     <Layout userRole="admin">
       {/* Page Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-content mb-2">Dashboard</h1>
-        <p className="text-content-muted">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Dashboard</h1>
+        <p className="text-gray-600 dark:text-gray-400">
           Welcome back! Here's what's happening at your institution today.
         </p>
       </div>
@@ -145,24 +145,24 @@ const DashboardPage = () => {
               {events.map((event) => (
                 <div
                   key={event.id}
-                  className="flex items-start gap-4 p-3 rounded-xl hover:bg-dark-700/50 transition-colors cursor-pointer group"
+                  className="flex items-start gap-4 p-3 rounded-xl hover:bg-primary-50 dark:hover:bg-dark-700/50 transition-colors cursor-pointer group"
                 >
                   {/* Date Box */}
-                  <div className="flex-shrink-0 w-14 h-14 bg-dark-700 rounded-xl flex flex-col items-center justify-center border border-dark-600">
-                    <span className="text-xs text-content-muted uppercase">
+                  <div className="flex-shrink-0 w-14 h-14 bg-light-200 dark:bg-dark-700 rounded-xl flex flex-col items-center justify-center border border-light-600 dark:border-dark-600">
+                    <span className="text-xs text-gray-600 dark:text-gray-400 uppercase">
                       {new Date(event.date).toLocaleString('default', { month: 'short' })}
                     </span>
-                    <span className="text-lg font-bold text-content">
+                    <span className="text-lg font-bold text-gray-900 dark:text-white">
                       {new Date(event.date).getDate()}
                     </span>
                   </div>
 
                   {/* Event Details */}
                   <div className="flex-1 min-w-0">
-                    <h4 className="text-sm font-medium text-content group-hover:text-primary-400 transition-colors">
+                    <h4 className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-primary-400 transition-colors">
                       {event.title}
                     </h4>
-                    <p className="text-xs text-content-muted mt-1">
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
                       {event.time} • {event.location}
                     </p>
                     <div className="mt-2">
@@ -193,18 +193,18 @@ const DashboardPage = () => {
           {departmentStats.map((dept) => (
             <div key={dept.name} className="flex items-center gap-4">
               <div className="w-40 flex-shrink-0">
-                <p className="text-sm font-medium text-content">{dept.name}</p>
-                <p className="text-xs text-content-muted">{dept.students} students</p>
+                <p className="text-sm font-medium text-gray-900 dark:text-white">{dept.name}</p>
+                <p className="text-xs text-gray-600 dark:text-gray-400">{dept.students} students</p>
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-3">
-                  <div className="flex-1 h-2 bg-dark-700 rounded-full overflow-hidden">
+                  <div className="flex-1 h-2 bg-light-600 dark:bg-dark-700 rounded-full overflow-hidden">
                     <div
                       className="h-full rounded-full bg-gradient-to-r from-primary-500 to-accent-purple transition-all duration-500"
                       style={{ width: `${dept.performance}%` }}
                     />
                   </div>
-                  <span className="text-sm font-medium text-content w-10">
+                  <span className="text-sm font-medium text-gray-900 dark:text-white w-10">
                     {dept.performance}%
                   </span>
                 </div>

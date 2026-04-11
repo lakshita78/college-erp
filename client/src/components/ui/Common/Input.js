@@ -32,7 +32,7 @@ const Input = forwardRef(({
 
   const inputType = type === 'password' && showPassword ? 'text' : type;
 
-  const baseStyles = 'w-full bg-dark-700 border rounded-xl text-content placeholder-content-disabled transition-all duration-200 focus:outline-none';
+  const baseStyles = 'w-full bg-white dark:bg-dark-700 border rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-200 focus:outline-none';
 
   const sizes = {
     sm: 'px-3 py-2 text-sm',
@@ -41,10 +41,10 @@ const Input = forwardRef(({
   };
 
   const states = {
-    default: 'border-dark-600 hover:border-dark-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20',
+    default: 'border-light-600 dark:border-dark-600 hover:border-light-500 dark:hover:border-dark-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20',
     error: 'border-rose-500 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20',
     success: 'border-emerald-500 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20',
-    disabled: 'border-dark-600 bg-dark-800 text-content-disabled cursor-not-allowed',
+    disabled: 'border-light-600 dark:border-dark-600 bg-light-200 dark:bg-dark-800 text-gray-500 dark:text-gray-500 cursor-not-allowed',
   };
 
   const currentState = disabled ? 'disabled' : error ? 'error' : success ? 'success' : 'default';
@@ -64,7 +64,7 @@ const Input = forwardRef(({
       {label && (
         <label
           htmlFor={id || name}
-          className="block text-sm font-medium text-content mb-1.5"
+          className="block text-sm font-medium text-gray-900 dark:text-white mb-1.5"
         >
           {label}
           {required && <span className="text-rose-500 ml-1">*</span>}
@@ -73,7 +73,7 @@ const Input = forwardRef(({
       <div className="relative">
         {LeftIcon && (
           <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-            <LeftIcon className={`w-5 h-5 ${error ? 'text-rose-400' : isFocused ? 'text-primary-400' : 'text-content-disabled'}`} />
+            <LeftIcon className={`w-5 h-5 ${error ? 'text-rose-400' : isFocused ? 'text-primary-400' : 'text-gray-500 dark:text-gray-400'}`} />
           </div>
         )}
         <input
@@ -105,7 +105,7 @@ const Input = forwardRef(({
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="text-content-muted hover:text-content transition-colors"
+              className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
               tabIndex={-1}
             >
               {showPassword ? (
@@ -122,12 +122,12 @@ const Input = forwardRef(({
             <Check className="w-5 h-5 text-emerald-400" />
           )}
           {RightIcon && !error && !success && (
-            <RightIcon className="w-5 h-5 text-content-disabled" />
+            <RightIcon className="w-5 h-5 text-gray-500 dark:text-gray-400" />
           )}
         </div>
       </div>
       {(error || helperText) && (
-        <p className={`mt-1.5 text-sm ${error ? 'text-rose-400' : 'text-content-muted'}`}>
+        <p className={`mt-1.5 text-sm ${error ? 'text-rose-400' : 'text-gray-600 dark:text-gray-400'}`}>
           {error || helperText}
         </p>
       )}

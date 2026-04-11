@@ -143,10 +143,10 @@ const StudentDashboard = () => {
     >
       {/* Page Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-content mb-2">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
           Welcome back, {student?.name?.split(' ')[0] || 'Student'}!
         </h1>
-        <p className="text-content-muted">
+        <p className="text-gray-600 dark:text-gray-400">
           Here's what's happening with your academic journey today.
         </p>
       </div>
@@ -189,15 +189,15 @@ const StudentDashboard = () => {
               {schedule.map((item, index) => (
                 <div
                   key={index}
-                  className="flex items-center gap-4 p-4 rounded-xl bg-dark-700/50 hover:bg-dark-700 transition-colors"
+                  className="flex items-center gap-4 p-4 rounded-xl bg-white dark:bg-dark-700/50 hover:bg-primary-100/50 dark:hover:bg-dark-700 transition-colors"
                 >
                   <div className="flex flex-col items-center min-w-[80px]">
                     <Clock className="w-4 h-4 text-primary-400 mb-1" />
-                    <span className="text-sm font-medium text-content">{item.time}</span>
+                    <span className="text-sm font-medium text-gray-900 dark:text-white">{item.time}</span>
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-medium text-content">{item.subject}</h4>
-                    <p className="text-sm text-content-muted">Room {item.room}</p>
+                    <h4 className="font-medium text-gray-900 dark:text-white">{item.subject}</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Room {item.room}</p>
                   </div>
                   <Badge
                     variant={item.type === 'Lab' ? 'primary' : 'secondary'}
@@ -218,21 +218,19 @@ const StudentDashboard = () => {
               {notices.map((notice, index) => (
                 <div
                   key={index}
-                  className="p-4 rounded-xl bg-dark-700/50 hover:bg-dark-700 transition-colors cursor-pointer"
+                  className="p-4 rounded-xl bg-white dark:bg-dark-700/50 hover:bg-primary-100/50 dark:hover:bg-dark-700 transition-colors cursor-pointer"
                 >
                   <div className="flex items-start gap-3">
                     <div className={`w-2 h-2 rounded-full mt-2 ${
                       notice.priority === 'high' ? 'bg-rose-400' : 'bg-amber-400'
                     }`} />
                     <div className="flex-1">
-                      <h4 className="text-sm font-medium text-content mb-1">
-                        {notice.title}
-                      </h4>
+                      <h4 className="text-sm font-medium text-gray-900 dark:text-white">{notice.title}</h4>
                       <div className="flex items-center gap-2">
                         <Badge variant="secondary" size="sm">
                           {notice.type}
                         </Badge>
-                        <span className="text-xs text-content-muted">{notice.date}</span>
+                        <span className="text-xs text-gray-600 dark:text-gray-400">{notice.date}</span>
                       </div>
                     </div>
                   </div>
@@ -256,13 +254,13 @@ const StudentDashboard = () => {
             ].map((item, index) => (
               <div key={index}>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-content">{item.subject}</span>
+                  <span className="text-sm font-medium text-gray-900 dark:text-white">{item.subject}</span>
                   <div className="flex items-center gap-2">
                     <Badge variant="primary" size="sm">{item.grade}</Badge>
-                    <span className="text-sm text-content-muted">{item.progress}%</span>
+                    <span className="text-sm text-gray-600 dark:text-gray-400">{item.progress}%</span>
                   </div>
                 </div>
-                <div className="h-2 bg-dark-600 rounded-full overflow-hidden">
+                <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-gradient-to-r from-primary-500 to-primary-400 rounded-full"
                     style={{ width: `${item.progress}%` }}
@@ -284,11 +282,11 @@ const StudentDashboard = () => {
             ].map((item, index) => (
               <div
                 key={index}
-                className="p-4 rounded-xl bg-dark-700/50 hover:bg-dark-700 transition-colors text-center"
+              className="p-4 rounded-xl bg-white dark:bg-dark-700/50 hover:bg-primary-100/50 dark:hover:bg-dark-700 transition-colors text-center"
               >
                 <item.icon className={`w-8 h-8 mx-auto mb-2 ${item.color}`} />
-                <h4 className="text-sm font-medium text-content">{item.title}</h4>
-                <p className="text-xs text-content-muted">{item.desc}</p>
+                <h4 className="text-sm font-medium text-gray-900 dark:text-white">{item.title}</h4>
+                <p className="text-xs text-gray-600 dark:text-gray-400">{item.desc}</p>
               </div>
             ))}
           </div>

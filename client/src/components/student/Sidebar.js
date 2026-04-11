@@ -7,9 +7,9 @@ import AddIcon from "@mui/icons-material/Add";
 import { useDispatch } from "react-redux";
 import decode from "jwt-decode";
 const isNotActiveStyle =
-  "flex items-center px-5 gap-3 text-gray-500 hover:text-black transition-all duration-200 ease-in-out capitalize hover:bg-gray-200 py-2 my-1";
+  "flex items-center px-5 gap-3 text-gray-500 hover:text-black transition-all duration-200 ease-in-out capitalize hover:bg-primary-50 py-2 my-1";
 const isActiveStyle =
-  "flex items-center px-5 gap-3 text-blue-600 transition-all duration-200 ease-in-out capitalize hover:bg-gray-200 py-2 my-1";
+  "flex items-center px-5 gap-3 text-blue-600 transition-all duration-200 ease-in-out capitalize hover:bg-primary-50 py-2 my-1";
 
 const Sidebar = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));

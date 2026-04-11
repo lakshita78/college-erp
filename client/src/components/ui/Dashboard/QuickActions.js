@@ -77,10 +77,10 @@ const QuickActions = ({ actions = [], loading = false }) => {
               <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${action.color} flex items-center justify-center shadow-light-sm dark:shadow-dark-sm group-hover:scale-110 transition-transform duration-200`}>
                 <Icon className="w-5 h-5 text-white" />
               </div>
-              <span className="text-sm font-medium text-content dark:text-content-dark group-hover:text-primary-400 transition-colors">
+              <span className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-primary-400 transition-colors">
                 {action.label}
               </span>
-              <ChevronRight className="w-4 h-4 text-content-muted dark:text-content-dark-muted opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all duration-200" />
+              <ChevronRight className="w-4 h-4 text-gray-500 dark:text-gray-400 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all duration-200" />
             </div>
           </button>
         );

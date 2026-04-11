@@ -59,10 +59,10 @@ const Card = ({
             )}
             <div>
               {title && (
-                <h3 className="text-lg font-semibold text-content">{title}</h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h3>
               )}
               {subtitle && (
-                <p className="text-sm text-content-muted mt-0.5">{subtitle}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-0.5">{subtitle}</p>
               )}
             </div>
           </div>
@@ -93,7 +93,7 @@ const Card = ({
 export const CardSection = ({ children, title, className = '' }) => (
   <div className={`${className}`}>
     {title && (
-      <h4 className="text-sm font-medium text-content-muted dark:text-content-dark-muted uppercase tracking-wider mb-3">
+      <h4 className="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-3">
         {title}
       </h4>
     )}

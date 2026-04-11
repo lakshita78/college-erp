@@ -122,7 +122,7 @@ const ActivityFeed = ({
         return (
           <div
             key={activity.id}
-            className="flex items-start gap-3 p-3 rounded-xl hover:bg-light-200 dark:hover:bg-dark-700/50 transition-colors group cursor-pointer"
+            className="flex items-start gap-3 p-3 rounded-xl hover:bg-primary-50 dark:hover:bg-dark-700/50 transition-colors group cursor-pointer"
           >
             {/* Icon or Avatar */}
             {activity.user ? (
@@ -141,14 +141,14 @@ const ActivityFeed = ({
             {/* Content */}
             <div className="flex-1 min-w-0">
               <div className="flex items-center justify-between">
-                <h4 className="text-sm font-medium text-content dark:text-content-dark truncate group-hover:text-primary-400 transition-colors">
+                <h4 className="text-sm font-medium text-gray-900 dark:text-white truncate group-hover:text-primary-400 transition-colors">
                   {activity.title}
                 </h4>
-                <span className="text-xs text-content-muted dark:text-content-dark-muted whitespace-nowrap ml-2">
+                <span className="text-xs text-gray-500 dark:text-gray-500 whitespace-nowrap ml-2">
                   {getRelativeTime(activity.timestamp)}
                 </span>
               </div>
-              <p className="text-sm text-content-muted dark:text-content-dark-muted mt-0.5 line-clamp-2">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-0.5 line-clamp-2">
                 {activity.description}
               </p>
 
@@ -165,7 +165,7 @@ const ActivityFeed = ({
             </div>
 
             {/* Action menu */}
-            <button className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg hover:bg-light-600 dark:hover:bg-dark-600 text-content-muted dark:text-content-dark-muted transition-all">
+            <button className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg hover:bg-primary-100 dark:hover:bg-dark-600 text-gray-500 dark:text-gray-400 transition-all">
               <MoreHorizontal className="w-4 h-4" />
             </button>
           </div>

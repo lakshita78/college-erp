@@ -3,7 +3,7 @@ import { Avatar } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-const Header = () => {
+const Header = ({ title }) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -19,9 +19,9 @@ const Header = () => {
           alt=""
           className="h-7"
         />
-        <h1 className="font-bold text-blue-600 text-sm">CMS</h1>
+        <h1 className="font-bold text-blue-600 text-sm italic">CMS</h1>
       </div>
-      <h1 className="font-semibold text-black">Welcome</h1>
+      <h1 className="font-semibold text-black">{title || "Dashboard"}</h1>
       <div className="flex items-center space-x-3">
         <Avatar
           src={user.result.avatar}

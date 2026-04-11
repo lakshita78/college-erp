@@ -87,7 +87,7 @@ const Sidebar = ({ userRole = 'admin' }) => {
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-accent-purple flex items-center justify-center">
               <Building2 className="w-5 h-5 text-white" />
             </div>
-            <span className="text-lg font-semibold text-content dark:text-content-dark">ERP Portal</span>
+            <span className="text-lg font-semibold text-gray-900 dark:text-white">ERP Portal</span>
           </div>
         )}
         {collapsed && (
@@ -97,7 +97,7 @@ const Sidebar = ({ userRole = 'admin' }) => {
         )}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="p-2 rounded-lg hover:bg-light-700 dark:hover:bg-dark-600 text-content-muted dark:text-content-dark-muted hover:text-content dark:hover:text-content-dark transition-colors"
+          className="p-2 rounded-lg hover:bg-primary-100 dark:hover:bg-dark-600 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
         >
           {collapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
         </button>
@@ -118,17 +118,17 @@ const Sidebar = ({ userRole = 'admin' }) => {
                     `flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group ${
                       isActive
                         ? 'bg-primary-500/10 text-primary-400 border border-primary-500/20'
-                        : 'text-content-muted dark:text-content-dark-muted hover:bg-light-100 dark:hover:bg-dark-700 hover:text-content dark:hover:text-content-dark border border-transparent'
+                        : 'text-gray-600 dark:text-gray-400 hover:bg-primary-100/50 dark:hover:bg-dark-700 hover:text-gray-900 dark:hover:text-white border border-transparent'
                     }`
                   }
                 >
                   <Icon
                     className={`w-5 h-5 transition-colors ${
-                      isActive ? 'text-primary-400' : 'group-hover:text-content dark:group-hover:text-content-dark'
+                      isActive ? 'text-primary-400' : 'text-gray-500 dark:text-gray-500 group-hover:text-gray-900 dark:group-hover:text-white'
                     }`}
                   />
                   {!collapsed && (
-                    <span className="font-medium text-sm">{item.label}</span>
+                    <span className="font-medium text-sm text-gray-900 dark:text-white">{item.label}</span>
                   )}
                   {isActive && !collapsed && (
                     <div className="ml-auto w-1.5 h-1.5 rounded-full bg-primary-400" />
@@ -149,7 +149,7 @@ const Sidebar = ({ userRole = 'admin' }) => {
           }`}
         >
           <LogOut className="w-5 h-5" />
-          {!collapsed && <span className="font-medium text-sm">Logout</span>}
+          {!collapsed && <span className="font-medium text-sm text-gray-900 dark:text-white">Logout</span>}
         </button>
       </div>
     </aside>

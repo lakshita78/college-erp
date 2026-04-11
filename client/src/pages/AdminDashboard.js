@@ -128,8 +128,8 @@ const AdminDashboard = () => {
       header: 'Student Name',
       render: (value, row) => (
         <div>
-          <p className="text-sm font-medium text-content">{value}</p>
-          <p className="text-xs text-content-muted">{row.email}</p>
+          <p className="text-sm font-medium text-gray-900 dark:text-white">{value}</p>
+          <p className="text-xs text-gray-600 dark:text-gray-400">{row.email}</p>
         </div>
       ),
     },
@@ -141,12 +141,12 @@ const AdminDashboard = () => {
     {
       key: 'year',
       header: 'Year',
-      render: (value) => <span className="text-sm text-content">{value}</span>,
+      render: (value) => <span className="text-sm text-gray-900 dark:text-white">{value}</span>,
     },
     {
       key: 'batch',
       header: 'Batch',
-      render: (value) => <span className="text-sm text-content">{value}</span>,
+      render: (value) => <span className="text-sm text-gray-900 dark:text-white">{value}</span>,
     },
     {
       key: 'actions',
@@ -154,10 +154,10 @@ const AdminDashboard = () => {
       sortable: false,
       render: (_, row) => (
         <div className="flex items-center gap-1">
-          <button className="p-2 rounded-lg hover:bg-light-200 dark:hover:bg-dark-700 text-content-muted hover:text-primary-400 transition-colors">
+          <button className="p-2 rounded-lg hover:bg-primary-50 dark:hover:bg-dark-700 text-gray-600 dark:text-gray-400 hover:text-primary-400 transition-colors">
             <Edit className="w-4 h-4" />
           </button>
-          <button className="p-2 rounded-lg hover:bg-light-200 dark:hover:bg-dark-700 text-content-muted hover:text-rose-400 transition-colors">
+          <button className="p-2 rounded-lg hover:bg-primary-50 dark:hover:bg-dark-700 text-gray-600 dark:text-gray-400 hover:text-rose-400 transition-colors">
             <Trash2 className="w-4 h-4" />
           </button>
         </div>
@@ -186,8 +186,8 @@ const AdminDashboard = () => {
     <Layout userRole="admin" user={{ name: 'Administrator', role: 'System Admin' }}>
       {/* Page Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-content dark:text-content-dark mb-2">Admin Dashboard</h1>
-        <p className="text-content-muted dark:text-content-dark-muted">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Admin Dashboard</h1>
+        <p className="text-gray-600 dark:text-gray-400">
           Welcome back! Manage your institution from one central hub.
         </p>
       </div>
@@ -245,17 +245,17 @@ const AdminDashboard = () => {
           {departmentsData.map((dept, index) => (
             <div
               key={index}
-              className="p-4 rounded-xl bg-light-100 dark:bg-dark-700/50 hover:bg-light-200 dark:hover:bg-dark-700 transition-colors cursor-pointer"
+              className="p-4 rounded-xl bg-white/80 dark:bg-dark-700/50 hover:bg-primary-50 dark:hover:bg-dark-700 transition-colors cursor-pointer border border-light-600 dark:border-transparent"
             >
               <div className="flex items-center justify-between mb-3">
-                <span className="text-sm font-medium text-content dark:text-content-dark">{dept.name}</span>
+                <span className="text-sm font-medium text-gray-900 dark:text-white">{dept.name}</span>
                 <span className={`text-xs px-2 py-1 rounded-full ${dept.trend === 'up' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'}`}>
                   {dept.change}
                 </span>
               </div>
               <div className="flex items-baseline gap-2">
-                <span className="text-2xl font-bold text-content dark:text-content-dark">{dept.students}</span>
-                <span className="text-sm text-content-muted dark:text-content-dark-muted">students</span>
+                <span className="text-2xl font-bold text-gray-900 dark:text-white">{dept.students}</span>
+                <span className="text-sm text-gray-600 dark:text-gray-400">students</span>
               </div>
             </div>
           ))}

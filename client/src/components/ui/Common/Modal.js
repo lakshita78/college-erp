@@ -47,34 +47,34 @@ const Modal = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop with blur */}
       <div
-        className="absolute inset-0 bg-dark-900/80 backdrop-blur-sm transition-opacity animate-fade-in"
+        className="absolute inset-0 bg-black/50 dark:bg-dark-900/80 backdrop-blur-sm transition-opacity animate-fade-in"
         onClick={closeOnOverlayClick ? onClose : undefined}
       />
 
       {/* Modal Content */}
       <div
         className={`
-          relative w-full ${sizes[size]} bg-dark-800 rounded-2xl shadow-dark-xl 
-          border border-dark-600 animate-scale-in
+          relative w-full ${sizes[size]} bg-white dark:bg-dark-800 rounded-2xl shadow-light-xl dark:shadow-dark-xl 
+          border border-light-600 dark:border-dark-600 animate-scale-in
           ${className}
         `}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
         {(title || showCloseButton) && (
-          <div className="flex items-center justify-between px-6 py-4 border-b border-dark-600">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-light-600 dark:border-dark-600">
             <div className="flex-1">
               {title && (
-                <h2 className="text-xl font-semibold text-content">{title}</h2>
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{title}</h2>
               )}
               {description && (
-                <p className="text-sm text-content-muted mt-1">{description}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{description}</p>
               )}
             </div>
             {showCloseButton && (
               <button
                 onClick={onClose}
-                className="ml-4 p-2 rounded-lg hover:bg-dark-700 text-content-muted hover:text-content transition-colors"
+                className="ml-4 p-2 rounded-lg hover:bg-primary-50 dark:hover:bg-dark-700 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -89,7 +89,7 @@ const Modal = ({
 
         {/* Footer */}
         {footer && (
-          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-dark-600 bg-dark-800/50 rounded-b-2xl">
+          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-light-600 dark:border-dark-600 bg-light-100 dark:bg-dark-800/50 rounded-b-2xl">
             {footer}
           </div>
         )}

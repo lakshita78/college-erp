@@ -49,16 +49,16 @@ const AdminLoginNew = () => {
         <div className="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/50 to-transparent" />
         
         <div className="relative z-10 flex flex-col justify-between p-12">
-          <Link to="/" className="flex items-center gap-3 text-content">
+          <Link to="/" className="flex items-center gap-3 text-white">
             <Building2 className="w-8 h-8" />
             <span className="text-xl font-bold">ERP Portal</span>
           </Link>
           
           <div className="max-w-md">
-            <h2 className="text-3xl font-bold text-content mb-4">
+            <h2 className="text-3xl font-bold text-white mb-4">
               Admin Portal
             </h2>
-            <p className="text-content-muted mb-8">
+            <p className="text-gray-400 mb-8">
               Access comprehensive tools to manage your institution efficiently.
             </p>
             <div className="space-y-3">
@@ -69,13 +69,13 @@ const AdminLoginNew = () => {
               ].map((item, index) => (
                 <div key={index} className="flex items-center gap-3">
                   <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-                  <span className="text-content">{item}</span>
+                  <span className="text-gray-300">{item}</span>
                 </div>
               ))}
             </div>
           </div>
           
-          <p className="text-content-muted text-sm">
+          <p className="text-gray-400 text-sm">
             © 2024 College ERP System
           </p>
         </div>
@@ -89,7 +89,7 @@ const AdminLoginNew = () => {
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-accent-purple flex items-center justify-center">
               <Building2 className="w-6 h-6 text-white" />
             </div>
-            <span className="text-xl font-bold text-content">ERP Portal</span>
+            <span className="text-xl font-bold text-gray-900 dark:text-white">ERP Portal</span>
           </div>
 
           <Card padding="lg" className="border border-dark-600">
@@ -97,8 +97,8 @@ const AdminLoginNew = () => {
               <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-rose-500 to-rose-600 flex items-center justify-center mx-auto mb-4 shadow-dark">
                 <Shield className="w-8 h-8 text-white" />
               </div>
-              <h1 className="text-2xl font-bold text-content mb-2">Admin Login</h1>
-              <p className="text-content-muted">
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Admin Login</h1>
+              <p className="text-gray-600 dark:text-gray-400">
                 Enter your credentials to access the admin dashboard
               </p>
             </div>
@@ -115,30 +115,21 @@ const AdminLoginNew = () => {
                 error={error.usernameError}
               />
 
-              <div className="relative">
-                <Input
-                  label="Password"
-                  type={showPassword ? 'text' : 'password'}
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  leftIcon={Lock}
-                  error={error.passwordError}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-[34px] text-content-muted hover:text-content transition-colors"
-                >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
+              <Input
+                label="Password"
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                leftIcon={Lock}
+                error={error.passwordError}
+              />
 
               <div className="flex items-center justify-between">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input type="checkbox" className="w-4 h-4 rounded border-dark-500 bg-dark-700 text-primary-500 focus:ring-primary-500" />
-                  <span className="text-sm text-content-muted">Remember me</span>
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Remember me</span>
                 </label>
                 <Link to="#" className="text-sm text-primary-400 hover:text-primary-300">
                   Forgot password?
@@ -167,7 +158,7 @@ const AdminLoginNew = () => {
             <div className="mt-8 pt-6 border-t border-dark-600">
               <Link
                 to="/"
-                className="flex items-center justify-center gap-2 text-content-muted hover:text-content transition-colors"
+                className="flex items-center justify-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
               >
                 <ArrowLeft className="w-4 h-4" />
                 Back to home
@@ -177,7 +168,7 @@ const AdminLoginNew = () => {
 
           {/* Other Login Options */}
           <div className="mt-6 text-center">
-            <p className="text-content-muted text-sm mb-4">Other login options</p>
+            <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">Other login options</p>
             <div className="flex items-center justify-center gap-3">
               <Link to="/login/facultylogin">
                 <Button variant="ghost" size="sm">

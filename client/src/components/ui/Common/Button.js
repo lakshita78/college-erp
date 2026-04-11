@@ -15,13 +15,13 @@ const Button = ({
   type = 'button',
   ...props
 }) => {
-  const baseStyles = 'inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-dark-900 disabled:opacity-50 disabled:cursor-not-allowed';
+  const baseStyles = 'inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-dark-900 disabled:opacity-50 disabled:cursor-not-allowed';
 
   const variants = {
     primary: 'bg-primary-600 hover:bg-primary-500 text-white focus:ring-primary-500 shadow-dark-sm hover:shadow-dark',
-    secondary: 'bg-dark-700 hover:bg-dark-600 text-content border border-dark-600 focus:ring-dark-500',
+    secondary: 'bg-light-200 dark:bg-dark-700 hover:bg-light-300 dark:hover:bg-dark-600 text-gray-900 dark:text-white border border-light-600 dark:border-dark-600 focus:ring-light-500 dark:focus:ring-dark-500',
     outline: 'bg-transparent border-2 border-primary-500 text-primary-400 hover:bg-primary-500/10 focus:ring-primary-500',
-    ghost: 'bg-transparent text-content-muted hover:text-content hover:bg-dark-700 focus:ring-dark-500',
+    ghost: 'bg-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-primary-50 dark:hover:bg-dark-700 focus:ring-light-500 dark:focus:ring-dark-500',
     danger: 'bg-rose-600 hover:bg-rose-500 text-white focus:ring-rose-500 shadow-dark-sm',
     success: 'bg-emerald-600 hover:bg-emerald-500 text-white focus:ring-emerald-500 shadow-dark-sm',
     accent: 'bg-accent-purple hover:bg-accent-purple/80 text-white focus:ring-accent-purple shadow-dark-sm',

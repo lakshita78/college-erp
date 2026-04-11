@@ -83,13 +83,13 @@ const LandingPage = () => {
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-accent-purple flex items-center justify-center">
                 <Building2 className="w-6 h-6 text-white" />
               </div>
-              <span className="text-xl font-bold text-content">ERP Portal</span>
+              <span className="text-xl font-bold text-white">ERP Portal</span>
             </div>
             <div className="hidden md:flex items-center gap-6">
-              <a href="#features" className="text-content-muted hover:text-content transition-colors">
+              <a href="#features" className="text-gray-400 hover:text-white transition-colors">
                 Features
               </a>
-              <a href="#login" className="text-content-muted hover:text-content transition-colors">
+              <a href="#login" className="text-gray-400 hover:text-white transition-colors">
                 Login
               </a>
               <Link to="/login/adminlogin">
@@ -114,11 +114,11 @@ const LandingPage = () => {
               <Star className="w-4 h-4" />
               <span>Now with Dark Mode</span>
             </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-content mb-6 leading-tight">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
               College ERP
               <span className="block text-gradient">Management System</span>
             </h1>
-            <p className="text-lg sm:text-xl text-content-muted mb-8 max-w-2xl mx-auto">
+            <p className="text-lg sm:text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
               A comprehensive solution for managing your educational institution. 
               Streamline administration, enhance learning, and drive student success.
             </p>
@@ -150,7 +150,7 @@ const LandingPage = () => {
             ].map((stat, index) => (
               <div key={index} className="text-center">
                 <div className="text-3xl sm:text-4xl font-bold text-gradient mb-2">{stat.value}</div>
-                <div className="text-content-muted">{stat.label}</div>
+                <div className="text-gray-400">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -161,10 +161,10 @@ const LandingPage = () => {
       <section id="features" className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-content mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
               Powerful Features for Education
             </h2>
-            <p className="text-content-muted max-w-2xl mx-auto">
+            <p className="text-gray-400 max-w-2xl mx-auto">
               Everything you need to manage your institution efficiently
             </p>
           </div>
@@ -180,8 +180,8 @@ const LandingPage = () => {
                   <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center mx-auto mb-4 shadow-dark group-hover:scale-110 transition-transform duration-300`}>
                     <Icon className="w-7 h-7 text-white" />
                   </div>
-                  <h3 className="text-lg font-semibold text-content mb-2">{feature.title}</h3>
-                  <p className="text-sm text-content-muted">{feature.description}</p>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{feature.title}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{feature.description}</p>
                 </Card>
               );
             })}
@@ -193,10 +193,10 @@ const LandingPage = () => {
       <section id="login" className="py-20 bg-dark-800/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-content mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
               Choose Your Portal
             </h2>
-            <p className="text-content-muted max-w-2xl mx-auto">
+            <p className="text-gray-400 max-w-2xl mx-auto">
               Select your role to access the appropriate dashboard
             </p>
           </div>
@@ -214,8 +214,8 @@ const LandingPage = () => {
                     <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${option.color} flex items-center justify-center mb-6 shadow-dark group-hover:scale-110 transition-transform duration-300`}>
                       <Icon className="w-8 h-8 text-white" />
                     </div>
-                    <h3 className="text-2xl font-bold text-content mb-2">{option.role}</h3>
-                    <p className="text-content-muted mb-6">{option.description}</p>
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{option.role}</h3>
+                    <p className="text-gray-600 dark:text-gray-400 mb-6">{option.description}</p>
                     <div className="flex items-center text-primary-400 font-medium group-hover:text-primary-300 transition-colors">
                       Login Now
                       <ChevronRight className="w-5 h-5 ml-1 group-hover:translate-x-1 transition-transform" />
@@ -233,10 +233,10 @@ const LandingPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl sm:text-4xl font-bold text-content mb-6">
+              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
                 Why Choose Our ERP System?
               </h2>
-              <p className="text-content-muted mb-8">
+              <p className="text-gray-400 mb-8">
                 Our comprehensive ERP solution is designed specifically for educational institutions, 
                 providing all the tools you need to succeed.
               </p>
@@ -250,7 +250,7 @@ const LandingPage = () => {
                 ].map((benefit, index) => (
                   <div key={index} className="flex items-center gap-3">
                     <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />
-                    <span className="text-content">{benefit}</span>
+                    <span className="text-gray-300">{benefit}</span>
                   </div>
                 ))}
               </div>
@@ -261,7 +261,7 @@ const LandingPage = () => {
                 <div className="aspect-square rounded-2xl bg-dark-700/50 flex items-center justify-center">
                   <div className="text-center">
                     <Building2 className="w-24 h-24 text-primary-400 mx-auto mb-4" />
-                    <p className="text-content-muted">ERP Dashboard Preview</p>
+                    <p className="text-gray-400">ERP Dashboard Preview</p>
                   </div>
                 </div>
               </Card>
@@ -278,15 +278,15 @@ const LandingPage = () => {
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-accent-purple flex items-center justify-center">
                 <Building2 className="w-5 h-5 text-white" />
               </div>
-              <span className="text-lg font-semibold text-content">ERP Portal</span>
+              <span className="text-lg font-semibold text-white">ERP Portal</span>
             </div>
-            <p className="text-content-muted text-sm">
+            <p className="text-gray-400 text-sm">
               © 2024 College ERP System. All rights reserved.
             </p>
-            <div className="flex items-center gap-6 text-sm text-content-muted">
-              <a href="#" className="hover:text-content transition-colors">Privacy</a>
-              <a href="#" className="hover:text-content transition-colors">Terms</a>
-              <a href="#" className="hover:text-content transition-colors">Support</a>
+            <div className="flex items-center gap-6 text-sm text-gray-400">
+              <a href="#" className="hover:text-white transition-colors">Privacy</a>
+              <a href="#" className="hover:text-white transition-colors">Terms</a>
+              <a href="#" className="hover:text-white transition-colors">Support</a>
             </div>
           </div>
         </div>

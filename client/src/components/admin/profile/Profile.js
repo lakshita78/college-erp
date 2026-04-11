@@ -5,9 +5,9 @@ import Sidebar from "../Sidebar";
 
 const Profile = () => {
   return (
-    <div className="bg-[#d6d9e0] h-screen flex items-center justify-center">
-      <div className="flex flex-col  bg-[#f4f6fa] h-5/6 w-[95%] rounded-2xl shadow-2xl space-y-6 ">
-        <Header />
+    <div className="bg-light-800 h-screen flex items-center justify-center font-primary">
+      <div className="flex flex-col bg-white h-5/6 w-[95%] rounded-2xl shadow-2xl space-y-6 ">
+        <Header title="My Profile" />
         <div className="flex flex-[0.95]">
           <Sidebar />
           <Body />
