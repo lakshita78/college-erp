@@ -3,11 +3,15 @@ import AddIcon from "@mui/icons-material/Add";
 import { useDispatch, useSelector } from "react-redux";
 import FileBase from "react-file-base64";
 import { addStudent } from "../../../redux/actions/adminActions";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import Spinner from "../../../utils/Spinner";
 import { ADD_STUDENT, SET_ERRORS } from "../../../redux/actionTypes";
-import * as classes from "../../../utils/styles";
+
+// New UI Components
+import FormField from "../../ui/Form/FormField";
+import Input from "../../ui/Form/Input";
+import Select from "../../ui/Form/Select";
+import Button from "../../ui/Form/Button";
+import FormHeader from "../../ui/Form/FormHeader";
 
 const Body = () => {
   const dispatch = useDispatch();
@@ -37,8 +41,10 @@ const Body = () => {
   useEffect(() => {
     if (Object.keys(store.errors).length !== 0) {
       setError(store.errors);
-      errorRef.current.scrollIntoView({ behavior: "smooth" });
-      setValue({ ...value, email: "" });
+      if (errorRef.current) {
+        errorRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+      setValue((prev) => ({ ...prev, email: "" }));
     }
   }, [store.errors]);
 
@@ -76,11 +82,11 @@ const Body = () => {
     } else {
       setLoading(true);
     }
-  }, [store.errors, store.admin.studentAdded]);
+  }, [store.errors, store.admin.studentAdded, dispatch]);
 
   useEffect(() => {
     dispatch({ type: SET_ERRORS, payload: {} });
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="animate-fade-in max-w-5xl mx-auto px-4 sm:px-6">
@@ -96,89 +102,62 @@ const Body = () => {
           <form className="space-y-12" onSubmit={handleSubmit}>
             {/* Section: Student Information */}
             <div className="space-y-8">
-              <div className="flex items-center justify-between border-b border-gray-100 pb-4">
-                <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest">
-                  Student Information
-                </h2>
-                <div className="h-px flex-1 bg-gray-100 ml-6" />
-              </div>
+              <FormHeader title="Student Information" />
 
               <div className="grid md:grid-cols-2 gap-x-12 gap-y-6">
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
-                    Full Name
-                  </label>
-                  <input
+                <FormField label="Full Name" required error={error.name}>
+                  <Input
                     placeholder="e.g. John Doe"
                     required
-                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none"
-                    type="text"
                     value={value.name}
                     onChange={(e) => setValue({ ...value, name: e.target.value })}
                   />
-                </div>
+                </FormField>
 
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
-                    Email Address
-                  </label>
-                  <input
+                <FormField label="Email Address" required error={error.email}>
+                  <Input
                     required
                     placeholder="example@gmail.com"
-                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none"
                     type="email"
                     value={value.email}
                     onChange={(e) => setValue({ ...value, email: e.target.value })}
                   />
-                </div>
+                </FormField>
 
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
-                    Date of Birth
-                  </label>
-                  <input
+                <FormField label="Date of Birth" required error={error.dob}>
+                  <Input
                     required
-                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none leading-none"
                     type="date"
                     value={value.dob}
                     onChange={(e) => setValue({ ...value, dob: e.target.value })}
                   />
-                </div>
+                </FormField>
 
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
-                    Gender
-                  </label>
-                  <select
+                <FormField label="Gender" required error={error.gender}>
+                  <Select
                     required
-                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none appearance-none cursor-pointer"
+                    placeholder="Select Gender"
                     value={value.gender}
-                    onChange={(e) => setValue({ ...value, gender: e.target.value })}>
-                    <option value="">Select Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
+                    onChange={(e) => setValue({ ...value, gender: e.target.value })}
+                    options={[
+                      { label: "Male", value: "Male" },
+                      { label: "Female", value: "Female" },
+                      { label: "Other", value: "Other" }
+                    ]}
+                  />
+                </FormField>
 
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
-                    Contact Number
-                  </label>
-                  <input
+                <FormField label="Contact Number" required error={error.contactNumber}>
+                  <Input
                     required
-                    placeholder="+1234567890"
-                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none"
+                    placeholder="+91 XXXXXXXXXX"
                     type="number"
                     value={value.contactNumber}
                     onChange={(e) => setValue({ ...value, contactNumber: e.target.value })}
                   />
-                </div>
+                </FormField>
 
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
-                    Student Avatar
-                  </label>
+                <FormField label="Student Avatar">
                   <div className="w-full px-5 py-2.5 bg-white/50 border border-dashed border-gray-300 rounded-2xl hover:bg-white transition-colors">
                     <FileBase
                       type="file"
@@ -186,163 +165,114 @@ const Body = () => {
                       onDone={({ base64 }) => setValue({ ...value, avatar: base64 })}
                     />
                   </div>
-                </div>
+                </FormField>
               </div>
             </div>
 
             {/* Section: Academic Details */}
             <div className="space-y-8">
-              <div className="flex items-center justify-between border-b border-gray-100 pb-4">
-                <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest">
-                  Academic Details
-                </h2>
-                <div className="h-px flex-1 bg-gray-100 ml-6" />
-              </div>
+              <FormHeader title="Academic Details" />
 
               <div className="grid md:grid-cols-2 gap-x-12 gap-y-6">
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
-                    Department
-                  </label>
-                  <select
+                <FormField label="Department" required error={error.department}>
+                  <Select
                     required
-                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none appearance-none cursor-pointer"
+                    placeholder="Select Department"
                     value={value.department}
-                    onChange={(e) => setValue({ ...value, department: e.target.value })}>
-                    <option value="">Select Department</option>
-                    {departments?.map((dp, idx) => (
-                      <option key={idx} value={dp.department}>
-                        {dp.department}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                    onChange={(e) => setValue({ ...value, department: e.target.value })}
+                    options={departments?.map(dp => ({ label: dp.department, value: dp.department }))}
+                  />
+                </FormField>
 
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
-                    Batch Year
-                  </label>
-                  <input
+                <FormField label="Batch Year" required error={error.batch}>
+                  <Input
                     required
-                    placeholder="2022-2026"
-                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none"
-                    type="text"
+                    placeholder="e.g. 2022-2026"
                     value={value.batch}
                     onChange={(e) => setValue({ ...value, batch: e.target.value })}
                   />
-                </div>
+                </FormField>
 
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
-                    Academic Year
-                  </label>
-                  <select
+                <FormField label="Academic Year" required error={error.year}>
+                  <Select
                     required
-                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none appearance-none cursor-pointer"
+                    placeholder="Select Year"
                     value={value.year}
-                    onChange={(e) => setValue({ ...value, year: e.target.value })}>
-                    <option value="">Select Year</option>
-                    <option value="1">1st Year</option>
-                    <option value="2">2nd Year</option>
-                    <option value="3">3rd Year</option>
-                    <option value="4">4th Year</option>
-                  </select>
-                </div>
+                    onChange={(e) => setValue({ ...value, year: e.target.value })}
+                    options={[
+                      { label: "1st Year", value: "1" },
+                      { label: "2nd Year", value: "2" },
+                      { label: "3rd Year", value: "3" },
+                      { label: "4th Year", value: "4" }
+                    ]}
+                  />
+                </FormField>
 
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
-                    Section
-                  </label>
-                  <select
+                <FormField label="Section" required error={error.section}>
+                  <Select
                     required
-                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none appearance-none cursor-pointer"
+                    placeholder="Select Section"
                     value={value.section}
-                    onChange={(e) => setValue({ ...value, section: e.target.value })}>
-                    <option value="">Select Section</option>
-                    <option value="1">Section 1</option>
-                    <option value="2">Section 2</option>
-                    <option value="3">Section 3</option>
-                  </select>
-                </div>
+                    onChange={(e) => setValue({ ...value, section: e.target.value })}
+                    options={[
+                      { label: "Section 1", value: "1" },
+                      { label: "Section 2", value: "2" },
+                      { label: "Section 3", value: "3" }
+                    ]}
+                  />
+                </FormField>
               </div>
             </div>
 
             {/* Section: Parent Information */}
             <div className="space-y-8">
-              <div className="flex items-center justify-between border-b border-gray-100 pb-4">
-                <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest">
-                  Parent Information
-                </h2>
-                <div className="h-px flex-1 bg-gray-100 ml-6" />
-              </div>
+              <FormHeader title="Parent Information" />
 
               <div className="grid md:grid-cols-2 gap-x-12 gap-y-6">
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
-                    Father's Name
-                  </label>
-                  <input
+                <FormField label="Father's Name" required error={error.fatherName}>
+                  <Input
                     required
                     placeholder="Full Name"
-                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none"
-                    type="text"
                     value={value.fatherName}
                     onChange={(e) => setValue({ ...value, fatherName: e.target.value })}
                   />
-                </div>
+                </FormField>
 
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
-                    Father's Contact
-                  </label>
-                  <input
+                <FormField label="Father's Contact" required error={error.fatherContactNumber}>
+                  <Input
                     required
                     placeholder="Contact Number"
-                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none"
                     type="number"
                     value={value.fatherContactNumber}
-                    onChange={(e) =>
-                      setValue({ ...value, fatherContactNumber: e.target.value })
-                    }
+                    onChange={(e) => setValue({ ...value, fatherContactNumber: e.target.value })}
                   />
-                </div>
+                </FormField>
 
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
-                    Mother's Name
-                  </label>
-                  <input
+                <FormField label="Mother's Name" required error={error.motherName}>
+                  <Input
                     required
                     placeholder="Full Name"
-                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none"
-                    type="text"
                     value={value.motherName}
                     onChange={(e) => setValue({ ...value, motherName: e.target.value })}
                   />
-                </div>
+                </FormField>
 
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
-                    Mother's Contact
-                  </label>
-                  <input
+                <FormField label="Mother's Contact" required error={error.motherContactNumber}>
+                  <Input
                     required
                     placeholder="Contact Number"
-                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none"
                     type="number"
                     value={value.motherContactNumber}
-                    onChange={(e) =>
-                      setValue({ ...value, motherContactNumber: e.target.value })
-                    }
+                    onChange={(e) => setValue({ ...value, motherContactNumber: e.target.value })}
                   />
-                </div>
+                </FormField>
               </div>
             </div>
 
             {/* Footer Actions */}
             <div className="flex items-center justify-end gap-4 pt-8 border-t border-gray-100">
-              <button
-                type="button"
+              <Button
+                variant="ghost"
                 onClick={() => {
                   setValue({
                     name: "", dob: "", email: "", department: "", contactNumber: "",
@@ -351,20 +281,20 @@ const Body = () => {
                   });
                   setError({});
                 }}
-                className="px-8 py-3 rounded-2xl text-gray-500 font-bold hover:bg-gray-100 transition-all">
+              >
                 Clear Form
-              </button>
-              <button
+              </Button>
+              <Button
                 type="submit"
-                disabled={loading}
-                className="px-10 py-3 bg-gray-900 text-white font-bold rounded-2xl hover:bg-gray-800 shadow-lg shadow-gray-200 disabled:opacity-50 transition-all">
-                {loading ? "Saving..." : "Save Student"}
-              </button>
+                loading={loading}
+              >
+                Save Student
+              </Button>
             </div>
 
             <div ref={errorRef} className="flex justify-center mt-6">
               {(error.emailError || error.backendError) && (
-                <div className="p-4 bg-rose-50 text-rose-500 rounded-2xl font-medium border border-rose-100 animate-shake">
+                <div className="p-4 bg-rose-50 text-rose-500 rounded-2xl font-medium border border-rose-100 animate-shake text-sm">
                   {error.emailError || error.backendError}
                 </div>
               )}

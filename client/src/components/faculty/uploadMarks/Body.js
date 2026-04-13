@@ -2,11 +2,17 @@ import React, { useEffect, useState } from "react";
 import BoyIcon from "@mui/icons-material/Boy";
 import { useDispatch, useSelector } from "react-redux";
 import { getStudent, uploadMark } from "../../../redux/actions/facultyActions";
-import { MenuItem, Select } from "@mui/material";
 import Spinner from "../../../utils/Spinner";
-import * as classes from "../../../utils/styles";
 import { MARKS_UPLOADED, SET_ERRORS } from "../../../redux/actionTypes";
 import { getTest } from "../../../redux/actions/facultyActions";
+
+// New UI Components
+import FormField from "../../ui/Form/FormField";
+import Input from "../../ui/Form/Input";
+import Select from "../../ui/Form/Select";
+import Button from "../../ui/Form/Button";
+import FormHeader from "../../ui/Form/FormHeader";
+
 const Body = () => {
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("user"));
@@ -18,7 +24,7 @@ const Body = () => {
   const [marks, setMarks] = useState([]);
 
   const [value, setValue] = useState({
-    department: "",
+    department: user.result.department,
     year: "",
     section: "",
     test: "",
@@ -29,7 +35,6 @@ const Body = () => {
     if (Object.keys(store.errors).length !== 0) {
       setError(store.errors);
       setLoading(false);
-      setValue({ department: "", year: "", section: "", test: "" });
     }
   }, [store.errors]);
 
@@ -55,6 +60,7 @@ const Body = () => {
 
   const uploadMarks = (e) => {
     setError({});
+    setLoading(true);
     dispatch(
       uploadMark(marks, value.department, value.section, value.year, value.test)
     );
@@ -66,175 +72,176 @@ const Body = () => {
 
   useEffect(() => {
     dispatch({ type: SET_ERRORS, payload: {} });
-    setValue({ ...value, department: user.result.department });
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (store.errors || store.faculty.marksUploaded) {
       setLoading(false);
       if (store.faculty.marksUploaded) {
-        setValue({ department: "", year: "", test: "", section: "" });
+        setValue({ department: user.result.department, year: "", test: "", section: "" });
         setSearch(false);
+        setMarks([]);
         dispatch({ type: SET_ERRORS, payload: {} });
         dispatch({ type: MARKS_UPLOADED, payload: false });
       }
     } else {
       setLoading(true);
     }
-  }, [store.errors, store.faculty.marksUploaded]);
+  }, [store.errors, store.faculty.marksUploaded, dispatch, user.result.department]);
 
   useEffect(() => {
     if (value.year !== "" && value.section !== "") {
       dispatch(getTest(value));
     }
-  }, [value.year, value.section]);
+  }, [value.year, value.section, dispatch, value]);
 
   return (
-    <div className="">
-      <div className="space-y-5">
-        <div className="flex text-gray-400 items-center space-x-2">
-          <BoyIcon />
-          <h1>All Students</h1>
+    <div className="animate-fade-in max-w-6xl mx-auto px-4 sm:px-6">
+      <div className="space-y-8">
+        <div className="flex items-center gap-3 text-primary-600">
+          <div className="p-2 bg-primary-500/10 rounded-xl">
+            <BoyIcon className="w-6 h-6" />
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900">Upload Marks</h1>
         </div>
-        <div className=" bg-white/70 backdrop-blur-md flex flex-col lg:flex-row rounded-3xl shadow-infix p-10 gap-10">
-          <form
-            className="flex flex-col space-y-4 lg:w-80 flex-shrink-0"
-            onSubmit={handleSubmit}>
-            <label htmlFor="year">Year</label>
-            <Select
-              required
-              displayEmpty
-              sx={{ height: 36, width: 224 }}
-              inputProps={{ "aria-label": "Without label" }}
-              value={value.year}
-              onChange={(e) => setValue({ ...value, year: e.target.value })}>
-              <MenuItem value="">None</MenuItem>
-              <MenuItem value="1">1</MenuItem>
-              <MenuItem value="2">2</MenuItem>
-              <MenuItem value="3">3</MenuItem>
-              <MenuItem value="4">4</MenuItem>
-            </Select>
-            <label htmlFor="section">Section</label>
-            <Select
-              required
-              displayEmpty
-              sx={{ height: 36, width: 224 }}
-              inputProps={{ "aria-label": "Without label" }}
-              value={value.section}
-              onChange={(e) => setValue({ ...value, section: e.target.value })}>
-              <MenuItem value="">None</MenuItem>
-              <MenuItem value="1">1</MenuItem>
-              <MenuItem value="2">2</MenuItem>
-              <MenuItem value="3">3</MenuItem>
-            </Select>
-            <label htmlFor="year">Test</label>
-            <Select
-              required
-              displayEmpty
-              sx={{ height: 36, width: 224 }}
-              inputProps={{ "aria-label": "Without label" }}
-              value={value.test}
-              onChange={(e) => setValue({ ...value, test: e.target.value })}>
-              <MenuItem value="">None</MenuItem>
-              {tests?.map((test, idx) => (
-                <MenuItem value={test.test} key={idx}>
-                  {test.test}
-                </MenuItem>
-              ))}
-            </Select>
-            <button
-              className={`${classes.adminFormSubmitButton} w-56`}
-              type="submit">
-              Search
-            </button>
-          </form>
-          <div className="flex-1 overflow-x-hidden">
-            <div className={classes.loadingAndError}>
-              {loading && (
-                <Spinner
-                  message="Loading"
-                  height={50}
-                  width={150}
-                  color="#111111"
-                  messageColor="blue"
-                />
-              )}
-              {(error.noStudentError || error.backendError) && (
-                <p className="text-red-500 text-2xl font-bold">
-                  {error.noStudentError || error.backendError}
-                </p>
-              )}
+
+        <div className="bg-white/70 backdrop-blur-md rounded-[2.5rem] shadow-infix border border-white/50 p-8 lg:p-12">
+          <div className="grid lg:grid-cols-3 gap-12">
+            {/* Filter Section */}
+            <div className="space-y-8">
+              <FormHeader title="Filter Students" />
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <FormField label="Department">
+                  <Input value={user.result.department} disabled className="bg-gray-50 opacity-70 cursor-not-allowed" />
+                </FormField>
+
+                <FormField label="Year" required error={error.year}>
+                  <Select
+                    required
+                    placeholder="Select Year"
+                    value={value.year}
+                    onChange={(e) => setValue({ ...value, year: e.target.value })}
+                    options={[
+                      { label: "1st Year", value: "1" },
+                      { label: "2nd Year", value: "2" },
+                      { label: "3rd Year", value: "3" },
+                      { label: "4th Year", value: "4" }
+                    ]}
+                  />
+                </FormField>
+
+                <FormField label="Section" required error={error.section}>
+                  <Select
+                    required
+                    placeholder="Select Section"
+                    value={value.section}
+                    onChange={(e) => setValue({ ...value, section: e.target.value })}
+                    options={[
+                      { label: "Section 1", value: "1" },
+                      { label: "Section 2", value: "2" },
+                      { label: "Section 3", value: "3" }
+                    ]}
+                  />
+                </FormField>
+
+                <FormField label="Test" required error={error.test}>
+                  <Select
+                    required
+                    placeholder="Select Test"
+                    value={value.test}
+                    onChange={(e) => setValue({ ...value, test: e.target.value })}
+                    options={tests?.map(t => ({ label: t.test, value: t.test }))}
+                  />
+                </FormField>
+
+                <Button type="submit" loading={loading && !search} className="w-full">
+                  Search Students
+                </Button>
+              </form>
             </div>
-            {search &&
-              !loading &&
-              Object.keys(error).length === 0 &&
-              students?.length !== 0 && (
-                <div className={`${classes.adminData} h-[20rem]`}>
-                  <div className="grid grid-cols-8">
-                    <h1 className={`col-span-1 ${classes.adminDataHeading}`}>
-                      Sr no.
-                    </h1>
-                    <h1 className={`col-span-2 ${classes.adminDataHeading}`}>
-                      Name
-                    </h1>
-                    <h1 className={`col-span-2 ${classes.adminDataHeading}`}>
-                      Username
-                    </h1>
 
-                    <h1 className={`col-span-1 ${classes.adminDataHeading}`}>
-                      Section
-                    </h1>
-                    <h1 className={`col-span-2 ${classes.adminDataHeading}`}>
-                      Marks
-                    </h1>
+            {/* Marks Upload Section */}
+            <div className="lg:col-span-2 space-y-8">
+              <FormHeader title="Student List" />
+              
+              <div className="min-h-[300px] flex flex-col justify-center">
+                {loading && !search && (
+                  <div className="flex justify-center">
+                    <Spinner message="Fetching Students..." height={50} width={150} color="#111111" messageColor="blue" />
                   </div>
-                  {students?.map((stu, idx) => (
-                    <div
-                      key={idx}
-                      className={`${classes.adminDataBody} grid-cols-8`}>
-                      <h1
-                        className={`col-span-1 ${classes.adminDataBodyFields}`}>
-                        {idx + 1}
-                      </h1>
-                      <h1
-                        className={`col-span-2 ${classes.adminDataBodyFields}`}>
-                        {stu.name}
-                      </h1>
-                      <h1
-                        className={`col-span-2 ${classes.adminDataBodyFields}`}>
-                        {stu.username}
-                      </h1>
+                )}
 
-                      <h1
-                        className={`col-span-1 ${classes.adminDataBodyFields}`}>
-                        {stu.section}
-                      </h1>
-                      <input
-                        onChange={(e) =>
-                          handleInputChange(e.target.value, stu._id)
-                        }
-                        value={stu.marks}
-                        className="col-span-2 border-2 w-24 px-2 h-8"
-                        type="text"
-                      />
+                {(error.noStudentError || error.backendError || error.examError) && (
+                  <div className="text-center p-8 bg-rose-50 rounded-3xl border border-rose-100">
+                    <p className="text-rose-500 font-bold text-lg">
+                      {error.noStudentError || error.backendError || error.examError}
+                    </p>
+                  </div>
+                )}
+
+                {!loading && search && students?.length === 0 && !error.noStudentError && (
+                  <div className="text-center p-8 bg-gray-50 rounded-3xl border border-gray-100">
+                    <p className="text-gray-500 font-medium">No students found for this criteria.</p>
+                  </div>
+                )}
+
+                {search && !loading && students?.length > 0 && (
+                  <div className="space-y-6">
+                    <div className="overflow-hidden bg-white/50 rounded-3xl border border-gray-100 shadow-sm">
+                      <table className="w-full text-left">
+                        <thead className="bg-gray-50/50 border-b border-gray-100">
+                          <tr>
+                            <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-center">Sr no.</th>
+                            <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Name</th>
+                            <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-center">Section</th>
+                            <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-center">Marks</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                          {students.map((stu, idx) => (
+                            <tr key={idx} className="hover:bg-white/80 transition-colors">
+                              <td className="px-6 py-4 text-sm text-gray-600 text-center font-medium">{idx + 1}</td>
+                              <td className="px-6 py-4 flex flex-col">
+                                <span className="text-sm font-semibold text-gray-900">{stu.name}</span>
+                                <span className="text-[10px] text-gray-400 font-mono italic">{stu.username}</span>
+                              </td>
+                              <td className="px-6 py-4 text-sm text-gray-600 text-center">{stu.section}</td>
+                              <td className="px-6 py-4 text-center">
+                                <input
+                                  type="text"
+                                  placeholder="00"
+                                  onChange={(e) => handleInputChange(e.target.value, stu._id)}
+                                  className="w-16 h-10 text-center bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all font-bold text-gray-900"
+                                />
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
-                  ))}
-                </div>
-              )}
-            {search && Object.keys(error).length === 0 && (
-              <div className="">
-                <button
-                  onClick={uploadMarks}
-                  className={`${classes.adminFormSubmitButton} bg-blue-500 mt-5 ml-[22rem]`}>
-                  Upload
-                </button>
+
+                    <div className="flex justify-end pt-4">
+                      <Button
+                        onClick={uploadMarks}
+                        loading={loading}
+                        disabled={marks.length === 0}
+                      >
+                        Upload Marks ({marks.length})
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                {!search && !loading && (
+                  <div className="text-center p-12 bg-gray-50/50 rounded-[2rem] border border-dashed border-gray-200">
+                    <div className="p-4 bg-white rounded-2xl w-fit mx-auto shadow-sm mb-4">
+                      <BoyIcon className="w-8 h-8 text-gray-300" />
+                    </div>
+                    <p className="text-gray-400 font-medium">Select criteria to Begin uploading marks</p>
+                  </div>
+                )}
               </div>
-            )}
-            {(error.examError || error.backendError) && (
-              <p className="text-red-500 text-2xl font-bold ml-32">
-                {error.examError || error.backendError}
-              </p>
-            )}
+            </div>
           </div>
         </div>
       </div>

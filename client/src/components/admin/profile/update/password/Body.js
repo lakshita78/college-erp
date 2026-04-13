@@ -5,7 +5,13 @@ import Spinner from "../../../../../utils/Spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { adminUpdatePassword } from "../../../../../redux/actions/adminActions";
-import * as classes from "../../../../../utils/styles";
+
+// New UI Components
+import FormField from "../../../../ui/Form/FormField";
+import Input from "../../../../ui/Form/Input";
+import Button from "../../../../ui/Form/Button";
+import FormHeader from "../../../../ui/Form/FormHeader";
+
 const Body = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -26,7 +32,7 @@ const Body = () => {
 
   const update = (e) => {
     e.preventDefault();
-
+    setError({});
     setLoading(true);
     dispatch(
       adminUpdatePassword(
@@ -49,93 +55,94 @@ const Body = () => {
   }, [store.errors]);
 
   return (
-    <div className="">
-      <div className="space-y-5">
-        <div className="flex text-gray-400 items-center space-x-2">
-          <VisibilityOffIcon />
-          <h1>Password</h1>
+    <div className="animate-fade-in max-w-2xl mx-auto px-4 sm:px-6">
+      <div className="space-y-8">
+        <div className="flex items-center gap-3 text-primary-600">
+          <div className="p-2 bg-primary-500/10 rounded-xl">
+            <VisibilityOffIcon className="w-6 h-6" />
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900">Security</h1>
         </div>
 
-        <div className=" bg-white/70 backdrop-blur-md flex flex-col rounded-3xl shadow-infix p-10 ">
-          <form
-            onSubmit={update}
-            className="flex flex-col space-y-6 items-center my-8">
-            <h1 className="text-black text-3xl font-bold">Update Password</h1>
-            <div className="space-y-1">
-              <p className="text-[#515966] font-bold text-sm">New Password</p>
-              <div className="border-2 rounded-lg px-3 flex items-center space-x-3 w-full">
-                <input
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  value={newPassword}
-                  required
-                  type={showPassword ? "text" : "password"}
-                  className="rounded-lg outline-none py-2  placeholder:text-sm"
-                  placeholder="New Password"
-                />
-                {showPassword ? (
-                  <VisibilityIcon
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="cursor-pointer"
-                  />
-                ) : (
-                  <VisibilityOffIcon
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="cursor-pointer"
-                  />
-                )}
+        <div className="bg-white/70 backdrop-blur-md rounded-[2.5rem] shadow-infix border border-white/50 p-8 lg:p-12">
+          <form className="space-y-10" onSubmit={update}>
+            <div className="space-y-6">
+              <FormHeader title="Update Password" />
+
+              <div className="space-y-6">
+                <FormField 
+                  label="New Password" 
+                  required 
+                  error={error.newPassword}
+                >
+                  <div className="relative group">
+                    <Input
+                      required
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter new password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      className="pr-12"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-gray-400 hover:text-primary-500 transition-colors"
+                    >
+                      {showPassword ? <VisibilityIcon className="w-5 h-5" /> : <VisibilityOffIcon className="w-5 h-5" />}
+                    </button>
+                  </div>
+                </FormField>
+
+                <FormField 
+                  label="Confirm Password" 
+                  required 
+                  error={error.confirmPassword || error.mismatchError}
+                >
+                  <div className="relative group">
+                    <Input
+                      required
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Confirm new password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      className="pr-12"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-gray-400 hover:text-primary-500 transition-colors"
+                    >
+                      {showPassword ? <VisibilityIcon className="w-5 h-5" /> : <VisibilityOffIcon className="w-5 h-5" />}
+                    </button>
+                  </div>
+                </FormField>
               </div>
             </div>
-            <div className="space-y-1">
-              <p className="text-[#515966] font-bold text-sm">
-                Confirm Password
-              </p>
-              <div className="border-2 rounded-lg px-3 flex items-center space-x-3 w-full">
-                <input
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  value={confirmPassword}
-                  required
-                  type={showPassword ? "text" : "password"}
-                  className="rounded-lg outline-none py-2  placeholder:text-sm"
-                  placeholder="Confirm Password"
-                />
-                {showPassword ? (
-                  <VisibilityIcon
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="cursor-pointer"
-                  />
-                ) : (
-                  <VisibilityOffIcon
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="cursor-pointer"
-                  />
-                )}
-              </div>
-            </div>
-            <div className={classes.adminFormButton}>
-              <button className={classes.adminFormSubmitButton} type="submit">
-                Update
-              </button>
-              <button
+
+            {/* Actions */}
+            <div className="flex items-center justify-end gap-4 pt-8 border-t border-gray-100">
+              <Button
+                variant="ghost"
                 onClick={() => navigate("/admin/profile")}
-                className={classes.adminFormClearButton}
-                type="button">
+              >
                 Cancel
-              </button>
+              </Button>
+              <Button
+                type="submit"
+                loading={loading}
+              >
+                Update Password
+              </Button>
             </div>
-            {loading && (
-              <Spinner
-                message="Updating"
-                height={30}
-                width={150}
-                color="#111111"
-                messageColor="#blue"
-              />
-            )}
-            {(error.mismatchError || error.backendError) && (
-              <p className="text-red-500">
-                {error.mismatchError || error.backendError}
-              </p>
-            )}
+
+            <div className="flex justify-center mt-6">
+              {error.backendError && (
+                <div className="p-4 bg-rose-50 text-rose-500 rounded-2xl font-medium border border-rose-100 animate-shake text-sm w-full text-center">
+                  {error.backendError}
+                </div>
+              )}
+            </div>
           </form>
         </div>
       </div>

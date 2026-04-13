@@ -4,13 +4,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { addDepartment } from "../../../redux/actions/adminActions";
 import Spinner from "../../../utils/Spinner";
 import { ADD_DEPARTMENT, SET_ERRORS } from "../../../redux/actionTypes";
-import * as classes from "../../../utils/styles";
+
+// New UI Components
+import FormField from "../../ui/Form/FormField";
+import Input from "../../ui/Form/Input";
+import Button from "../../ui/Form/Button";
+import FormHeader from "../../ui/Form/FormHeader";
+
 const Body = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [department, setDepartment] = useState("");
   const store = useSelector((state) => state);
   const [error, setError] = useState({});
+
   useEffect(() => {
     if (Object.keys(store.errors).length !== 0) {
       setError(store.errors);
@@ -22,7 +29,6 @@ const Body = () => {
     setError({});
     setLoading(true);
     dispatch(addDepartment({ department }));
-    setDepartment("");
   };
 
   useEffect(() => {
@@ -36,62 +42,63 @@ const Body = () => {
     } else {
       setLoading(true);
     }
-  }, [store.errors, store.admin.departmentAdded]);
+  }, [store.errors, store.admin.departmentAdded, dispatch]);
 
   useEffect(() => {
     dispatch({ type: SET_ERRORS, payload: {} });
-  }, []);
+  }, [dispatch]);
 
   return (
-    <div className="">
-      <div className="space-y-5">
-        <div className="flex text-gray-400 items-center space-x-2">
-          <AddIcon />
-          <h1>Add Subject</h1>
+    <div className="animate-fade-in max-w-3xl mx-auto px-4 sm:px-6">
+      <div className="space-y-8">
+        <div className="flex items-center gap-3 text-primary-600">
+          <div className="p-2 bg-primary-500/10 rounded-xl">
+            <AddIcon className="w-6 h-6" />
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900">Add Department</h1>
         </div>
-        <div className=" bg-white/70 backdrop-blur-md flex flex-col rounded-3xl shadow-infix p-10 ">
-          <form className={classes.adminForm0} onSubmit={handleSubmit}>
-            <div className="flex py-10 ml-10 space-x-28">
-              <div className="flex space-y-10 ">
-                <div className="flex space-x-3">
-                  <h1 className={classes.adminLabel}>Department :</h1>
 
-                  <input
-                    placeholder="Department"
+        <div className="bg-white/70 backdrop-blur-md rounded-[2.5rem] shadow-infix border border-white/50 p-8 lg:p-12">
+          <form className="space-y-12" onSubmit={handleSubmit}>
+            <div className="space-y-8">
+              <FormHeader title="Department Details" />
+
+              <div className="grid gap-6">
+                <FormField label="Department Name" required error={error.departmentError}>
+                  <Input
+                    placeholder="e.g. Computer Science & Engineering"
                     required
-                    className={classes.adminInput}
-                    type="text"
                     value={department}
                     onChange={(e) => setDepartment(e.target.value)}
                   />
-                </div>
+                </FormField>
               </div>
             </div>
-            <div className={classes.adminFormButton}>
-              <button className={classes.adminFormSubmitButton} type="submit">
-                Submit
-              </button>
-              <button
-                onClick={() => setDepartment("")}
-                className={classes.adminFormClearButton}
-                type="button">
+
+            {/* Footer Actions */}
+            <div className="flex items-center justify-end gap-4 pt-8 border-t border-gray-100">
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setDepartment("");
+                  setError({});
+                }}
+              >
                 Clear
-              </button>
+              </Button>
+              <Button
+                type="submit"
+                loading={loading}
+              >
+                Add Department
+              </Button>
             </div>
-            <div className={classes.loadingAndError}>
-              {loading && (
-                <Spinner
-                  message="Adding Department"
-                  height={30}
-                  width={150}
-                  color="#111111"
-                  messageColor="blue"
-                />
-              )}
-              {(error.departmentError || error.backendError) && (
-                <p className="text-red-500">
-                  {error.departmentError || error.backendError}
-                </p>
+
+            <div className="flex justify-center mt-6">
+              {(error.departmentError || error.backendError) && !error.departmentError && (
+                <div className="p-4 bg-rose-50 text-rose-500 rounded-2xl font-medium border border-rose-100 animate-shake text-sm">
+                  {error.backendError}
+                </div>
               )}
             </div>
           </form>

@@ -2,11 +2,16 @@ import React, { useEffect, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { useDispatch, useSelector } from "react-redux";
 import { addSubject } from "../../../redux/actions/adminActions";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import Spinner from "../../../utils/Spinner";
 import { ADD_SUBJECT, SET_ERRORS } from "../../../redux/actionTypes";
-import * as classes from "../../../utils/styles";
+
+// New UI Components
+import FormField from "../../ui/Form/FormField";
+import Input from "../../ui/Form/Input";
+import Select from "../../ui/Form/Select";
+import Button from "../../ui/Form/Button";
+import FormHeader from "../../ui/Form/FormHeader";
+
 const Body = () => {
   const dispatch = useDispatch();
   const store = useSelector((state) => state);
@@ -24,13 +29,14 @@ const Body = () => {
   useEffect(() => {
     if (Object.keys(store.errors).length !== 0) {
       setError(store.errors);
-      setValue({
+      setValue((prev) => ({
+        ...prev,
         subjectName: "",
         subjectCode: "",
         year: "",
         totalLectures: "",
         department: "",
-      });
+      }));
     }
   }, [store.errors]);
 
@@ -59,142 +65,109 @@ const Body = () => {
     } else {
       setLoading(true);
     }
-  }, [store.errors, store.admin.subjectAdded]);
+  }, [store.errors, store.admin.subjectAdded, dispatch]);
 
   useEffect(() => {
     dispatch({ type: SET_ERRORS, payload: {} });
-  }, []);
+  }, [dispatch]);
 
   return (
-    <div className="">
-      <div className="space-y-5">
-        <div className="flex text-gray-400 items-center space-x-2">
-          <AddIcon />
-          <h1>Add Subject</h1>
+    <div className="animate-fade-in max-w-5xl mx-auto px-4 sm:px-6">
+      <div className="space-y-8">
+        <div className="flex items-center gap-3 text-primary-600">
+          <div className="p-2 bg-primary-500/10 rounded-xl">
+            <AddIcon className="w-6 h-6" />
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900">Add Subject</h1>
         </div>
-        <div className=" bg-white/70 backdrop-blur-md flex flex-col rounded-3xl shadow-infix p-10 ">
-          <form className={classes.adminForm0} onSubmit={handleSubmit}>
-            <div className={classes.adminForm1}>
-              <div className={classes.adminForm2l}>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Subject Name :</h1>
 
-                  <input
-                    placeholder="Subject Name"
+        <div className="bg-white/70 backdrop-blur-md rounded-[2.5rem] shadow-infix border border-white/50 p-8 lg:p-12">
+          <form className="space-y-12" onSubmit={handleSubmit}>
+            <div className="space-y-8">
+              <FormHeader title="Subject Details" />
+
+              <div className="grid md:grid-cols-2 gap-x-12 gap-y-6">
+                <FormField label="Subject Name" required error={error.subjectName}>
+                  <Input
+                    placeholder="e.g. Data Structures"
                     required
-                    className={classes.adminInput}
-                    type="text"
                     value={value.subjectName}
-                    onChange={(e) =>
-                      setValue({ ...value, subjectName: e.target.value })
-                    }
+                    onChange={(e) => setValue({ ...value, subjectName: e.target.value })}
                   />
-                </div>
+                </FormField>
 
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Subject Code :</h1>
-
-                  <input
+                <FormField label="Subject Code" required error={error.subjectCode}>
+                  <Input
                     required
-                    placeholder="Subject Code"
-                    className={classes.adminInput}
-                    type="text"
+                    placeholder="e.g. CS101"
                     value={value.subjectCode}
-                    onChange={(e) =>
-                      setValue({ ...value, subjectCode: e.target.value })
-                    }
+                    onChange={(e) => setValue({ ...value, subjectCode: e.target.value })}
                   />
-                </div>
+                </FormField>
 
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Year :</h1>
+                <FormField label="Year" required error={error.year}>
                   <Select
                     required
-                    displayEmpty
-                    sx={{ height: 36 }}
-                    inputProps={{ "aria-label": "Without label" }}
+                    placeholder="Select Year"
                     value={value.year}
-                    onChange={(e) =>
-                      setValue({ ...value, year: e.target.value })
-                    }>
-                    <MenuItem value="">None</MenuItem>
-                    <MenuItem value="1">1</MenuItem>
-                    <MenuItem value="2">2</MenuItem>
-                    <MenuItem value="3">3</MenuItem>
-                    <MenuItem value="4">4</MenuItem>
-                  </Select>
-                </div>
-              </div>
-              <div className={classes.adminForm2r}>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Total Lectures :</h1>
+                    onChange={(e) => setValue({ ...value, year: e.target.value })}
+                    options={[
+                      { label: "1st Year", value: "1" },
+                      { label: "2nd Year", value: "2" },
+                      { label: "3rd Year", value: "3" },
+                      { label: "4th Year", value: "4" }
+                    ]}
+                  />
+                </FormField>
 
-                  <input
+                <FormField label="Total Lectures" required error={error.totalLectures}>
+                  <Input
                     required
                     placeholder="Total Lectures"
-                    className={classes.adminInput}
                     type="number"
                     value={value.totalLectures}
-                    onChange={(e) =>
-                      setValue({ ...value, totalLectures: e.target.value })
-                    }
+                    onChange={(e) => setValue({ ...value, totalLectures: e.target.value })}
                   />
-                </div>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Department :</h1>
+                </FormField>
+
+                <FormField label="Department" required error={error.department}>
                   <Select
                     required
-                    displayEmpty
-                    sx={{ height: 36 }}
-                    inputProps={{ "aria-label": "Without label" }}
+                    placeholder="Select Department"
                     value={value.department}
-                    onChange={(e) =>
-                      setValue({ ...value, department: e.target.value })
-                    }>
-                    <MenuItem value="">None</MenuItem>
-                    {departments?.map((dp, idx) => (
-                      <MenuItem key={idx} value={dp.department}>
-                        {dp.department}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </div>
+                    onChange={(e) => setValue({ ...value, department: e.target.value })}
+                    options={departments?.map(dp => ({ label: dp.department, value: dp.department }))}
+                  />
+                </FormField>
               </div>
             </div>
-            <div className={classes.adminFormButton}>
-              <button className={classes.adminFormSubmitButton} type="submit">
-                Submit
-              </button>
-              <button
+
+            {/* Footer Actions */}
+            <div className="flex items-center justify-end gap-4 pt-8 border-t border-gray-100">
+              <Button
+                variant="ghost"
                 onClick={() => {
                   setValue({
-                    subjectName: "",
-                    subjectCode: "",
-                    year: "",
-                    totalLectures: "",
-                    department: "",
+                    subjectName: "", subjectCode: "", year: "", totalLectures: "", department: "",
                   });
                   setError({});
                 }}
-                className={classes.adminFormClearButton}
-                type="button">
-                Clear
-              </button>
+              >
+                Clear Form
+              </Button>
+              <Button
+                type="submit"
+                loading={loading}
+              >
+                Save Subject
+              </Button>
             </div>
-            <div className={classes.loadingAndError}>
-              {loading && (
-                <Spinner
-                  message="Adding Subject"
-                  height={30}
-                  width={150}
-                  color="#111111"
-                  messageColor="blue"
-                />
-              )}
+
+            <div className="flex justify-center mt-6">
               {(error.subjectError || error.backendError) && (
-                <p className="text-red-500">
+                <div className="p-4 bg-rose-50 text-rose-500 rounded-2xl font-medium border border-rose-100 animate-shake text-sm">
                   {error.subjectError || error.backendError}
-                </p>
+                </div>
               )}
             </div>
           </form>

@@ -5,15 +5,18 @@ import {
   getStudent,
   markAttendance,
 } from "../../../redux/actions/facultyActions";
-import { MenuItem, Select } from "@mui/material";
 import Spinner from "../../../utils/Spinner";
-import * as classes from "../../../utils/styles";
 import { ATTENDANCE_MARKED, SET_ERRORS } from "../../../redux/actionTypes";
-import { getTest } from "../../../redux/actions/facultyActions";
 import { getSubject } from "../../../redux/actions/adminActions";
+
+// New UI Components
+import FormField from "../../ui/Form/FormField";
+import Select from "../../ui/Form/Select";
+import Button from "../../ui/Form/Button";
+import FormHeader from "../../ui/Form/FormHeader";
+
 const Body = () => {
   const dispatch = useDispatch();
-  const user = JSON.parse(localStorage.getItem("user"));
   const departments = useSelector((state) => state.admin.allDepartment);
   const subjects = useSelector((state) => state.admin.subjects.result);
 
@@ -34,18 +37,16 @@ const Body = () => {
     if (Object.keys(store.errors).length !== 0) {
       setError(store.errors);
       setLoading(false);
-      setValue({ department: "", year: "", section: "" });
     }
   }, [store.errors]);
 
   const handleInputChange = (e) => {
-    const tempCheck = checkedValue;
-    let index;
+    const tempCheck = [...checkedValue];
     if (e.target.checked) {
       tempCheck.push(e.target.value);
     } else {
-      index = tempCheck.indexOf(e.target.value);
-      tempCheck.splice(index, 1);
+      const index = tempCheck.indexOf(e.target.value);
+      if (index > -1) tempCheck.splice(index, 1);
     }
     setCheckedValue(tempCheck);
   };
@@ -62,6 +63,7 @@ const Body = () => {
 
   const uploadAttendance = (e) => {
     setError({});
+    setLoading(true);
     dispatch(
       markAttendance(
         checkedValue,
@@ -80,19 +82,14 @@ const Body = () => {
         setValue({ department: "", year: "", section: "" });
         setSearch(false);
         setSubjectName("");
+        setCheckedValue([]);
         dispatch({ type: SET_ERRORS, payload: {} });
         dispatch({ type: ATTENDANCE_MARKED, payload: false });
       }
     } else {
       setLoading(true);
     }
-  }, [store.errors, store.faculty.attendanceUploaded]);
-
-  useEffect(() => {
-    if (store.faculty.attendanceUploaded) {
-      setValue({ department: "", year: "", section: "" });
-    }
-  }, [store.faculty.attendanceUploaded]);
+  }, [store.errors, store.faculty.attendanceUploaded, dispatch]);
 
   useEffect(() => {
     if (students?.length !== 0) setLoading(false);
@@ -100,165 +97,167 @@ const Body = () => {
 
   useEffect(() => {
     dispatch({ type: SET_ERRORS, payload: {} });
-  }, []);
+  }, [dispatch]);
 
   return (
-    <div className="">
-      <div className="space-y-5">
-        <div className="flex text-gray-400 items-center space-x-2">
-          <BoyIcon />
-          <h1>All Students</h1>
+    <div className="animate-fade-in max-w-6xl mx-auto px-4 sm:px-6">
+      <div className="space-y-8">
+        <div className="flex items-center gap-3 text-primary-600">
+          <div className="p-2 bg-primary-500/10 rounded-xl">
+            <BoyIcon className="w-6 h-6" />
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900">Mark Attendance</h1>
         </div>
-        <div className=" bg-white/70 backdrop-blur-md flex flex-col lg:flex-row rounded-3xl shadow-infix p-10 gap-10">
-          <form
-            className="flex flex-col space-y-4 lg:w-80 flex-shrink-0"
-            onSubmit={handleSubmit}>
-            <label htmlFor="department">Department</label>
-            <Select
-              required
-              displayEmpty
-              sx={{ height: 36, width: 224 }}
-              inputProps={{ "aria-label": "Without label" }}
-              value={value.department}
-              onChange={(e) =>
-                setValue({ ...value, department: e.target.value })
-              }>
-              <MenuItem value="">None</MenuItem>
-              {departments?.map((dp, idx) => (
-                <MenuItem key={idx} value={dp.department}>
-                  {dp.department}
-                </MenuItem>
-              ))}
-            </Select>
-            <label htmlFor="year">Year</label>
-            <Select
-              required
-              displayEmpty
-              sx={{ height: 36, width: 224 }}
-              inputProps={{ "aria-label": "Without label" }}
-              value={value.year}
-              onChange={(e) => setValue({ ...value, year: e.target.value })}>
-              <MenuItem value="">None</MenuItem>
-              <MenuItem value="1">1</MenuItem>
-              <MenuItem value="2">2</MenuItem>
-              <MenuItem value="3">3</MenuItem>
-              <MenuItem value="4">4</MenuItem>
-            </Select>
-            <label htmlFor="section">Section</label>
-            <Select
-              required
-              displayEmpty
-              sx={{ height: 36, width: 224 }}
-              inputProps={{ "aria-label": "Without label" }}
-              value={value.section}
-              onChange={(e) => setValue({ ...value, section: e.target.value })}>
-              <MenuItem value="">None</MenuItem>
-              <MenuItem value="1">1</MenuItem>
-              <MenuItem value="2">2</MenuItem>
-              <MenuItem value="3">3</MenuItem>
-            </Select>
 
-            <button
-              className={`${classes.adminFormSubmitButton} w-56`}
-              type="submit">
-              Search
-            </button>
-          </form>
-          <div className="flex-1 overflow-x-hidden">
-            <div className={classes.loadingAndError}>
-              {loading && (
-                <Spinner
-                  message="Loading"
-                  height={50}
-                  width={150}
-                  color="#111111"
-                  messageColor="blue"
-                />
-              )}
-              {(error.noStudentError || error.backendError) && (
-                <p className="text-red-500 text-2xl font-bold">
-                  {error.noStudentError || error.backendError}
-                </p>
-              )}
+        <div className="bg-white/70 backdrop-blur-md rounded-[2.5rem] shadow-infix border border-white/50 p-8 lg:p-12">
+          <div className="grid lg:grid-cols-3 gap-12">
+            {/* Filter Section */}
+            <div className="space-y-8">
+              <FormHeader title="Filter Students" />
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <FormField label="Department" required error={error.department}>
+                  <Select
+                    required
+                    placeholder="Select Department"
+                    value={value.department}
+                    onChange={(e) => setValue({ ...value, department: e.target.value })}
+                    options={departments?.map(dp => ({ label: dp.department, value: dp.department }))}
+                  />
+                </FormField>
+                
+                <FormField label="Year" required error={error.year}>
+                  <Select
+                    required
+                    placeholder="Select Year"
+                    value={value.year}
+                    onChange={(e) => setValue({ ...value, year: e.target.value })}
+                    options={[
+                      { label: "1st Year", value: "1" },
+                      { label: "2nd Year", value: "2" },
+                      { label: "3rd Year", value: "3" },
+                      { label: "4th Year", value: "4" }
+                    ]}
+                  />
+                </FormField>
+
+                <FormField label="Section" required error={error.section}>
+                  <Select
+                    required
+                    placeholder="Select Section"
+                    value={value.section}
+                    onChange={(e) => setValue({ ...value, section: e.target.value })}
+                    options={[
+                      { label: "Section 1", value: "1" },
+                      { label: "Section 2", value: "2" },
+                      { label: "Section 3", value: "3" }
+                    ]}
+                  />
+                </FormField>
+
+                <Button type="submit" loading={loading && !search} className="w-full">
+                  Search Students
+                </Button>
+              </form>
             </div>
-            {search &&
-              !loading &&
-              Object.keys(error).length === 0 &&
-              students?.length !== 0 && (
-                <div className={`${classes.adminData} h-[20rem]`}>
-                  <div className="grid grid-cols-7">
-                    <h1 className={`col-span-1 ${classes.adminDataHeading}`}>
-                      Select
-                    </h1>
-                    <h1 className={`col-span-1 ${classes.adminDataHeading}`}>
-                      Sr no.
-                    </h1>
-                    <h1 className={`col-span-2 ${classes.adminDataHeading}`}>
-                      Name
-                    </h1>
-                    <h1 className={`col-span-2 ${classes.adminDataHeading}`}>
-                      Username
-                    </h1>
 
-                    <h1 className={`col-span-1 ${classes.adminDataHeading}`}>
-                      Section
-                    </h1>
+            {/* Attendance Section */}
+            <div className="lg:col-span-2 space-y-8">
+              <FormHeader title="Student List" />
+              
+              <div className="min-h-[300px] flex flex-col justify-center">
+                {loading && !search && (
+                  <div className="flex justify-center">
+                    <Spinner message="Fetching Students..." height={50} width={150} color="#111111" messageColor="blue" />
                   </div>
-                  {students?.map((stu, idx) => (
-                    <div
-                      key={idx}
-                      className={`${classes.adminDataBody} grid-cols-7`}>
-                      <input
-                        onChange={handleInputChange}
-                        value={stu._id}
-                        className="col-span-1 border-2 w-16 h-4 mt-3 px-2 "
-                        type="checkbox"
-                      />
-                      <h1
-                        className={`col-span-1 ${classes.adminDataBodyFields}`}>
-                        {idx + 1}
-                      </h1>
-                      <h1
-                        className={`col-span-2 ${classes.adminDataBodyFields}`}>
-                        {stu.name}
-                      </h1>
-                      <h1
-                        className={`col-span-2 ${classes.adminDataBodyFields}`}>
-                        {stu.username}
-                      </h1>
+                )}
 
-                      <h1
-                        className={`col-span-1 ${classes.adminDataBodyFields}`}>
-                        {stu.section}
-                      </h1>
+                {(error.noStudentError || error.backendError) && (
+                  <div className="text-center p-8 bg-rose-50 rounded-3xl border border-rose-100">
+                    <p className="text-rose-500 font-bold text-lg">
+                      {error.noStudentError || error.backendError}
+                    </p>
+                  </div>
+                )}
+
+                {!loading && search && students?.length === 0 && !error.noStudentError && (
+                  <div className="text-center p-8 bg-gray-50 rounded-3xl border border-gray-100">
+                    <p className="text-gray-500 font-medium">No students found for this criteria.</p>
+                  </div>
+                )}
+
+                {search && !loading && students?.length > 0 && (
+                  <div className="space-y-6">
+                    <div className="overflow-hidden bg-white/50 rounded-3xl border border-gray-100 shadow-sm">
+                      <table className="w-full text-left">
+                        <thead className="bg-gray-50/50 border-b border-gray-100">
+                          <tr>
+                            <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-center">Present</th>
+                            <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-center">Sr no.</th>
+                            <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Name</th>
+                            <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Username</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                          {students.map((stu, idx) => (
+                            <tr key={idx} className="hover:bg-white/80 transition-colors">
+                              <td className="px-6 py-4 text-center">
+                                <input
+                                  type="checkbox"
+                                  value={stu._id}
+                                  onChange={handleInputChange}
+                                  checked={checkedValue.includes(stu._id)}
+                                  className="w-5 h-5 rounded-lg border-gray-300 text-primary-600 focus:ring-primary-500 transition-all cursor-pointer"
+                                />
+                              </td>
+                              <td className="px-6 py-4 text-sm text-gray-600 text-center font-medium">{idx + 1}</td>
+                              <td className="px-6 py-4 text-sm font-semibold text-gray-900">{stu.name}</td>
+                              <td className="px-6 py-4 text-sm text-gray-600 font-mono italic">{stu.username}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
-                  ))}
-                </div>
-              )}
-            {search && Object.keys(error).length === 0 && (
-              <div className="space-x-3 flex items-center justify-center mt-5">
-                <label className="font-bold text-lg">Subject</label>
-                <Select
-                  required
-                  displayEmpty
-                  sx={{ height: 36, width: 224 }}
-                  inputProps={{ "aria-label": "Without label" }}
-                  value={subjectName}
-                  onChange={(e) => setSubjectName(e.target.value)}>
-                  <MenuItem value="">None</MenuItem>
-                  {subjects?.map((dp, idx) => (
-                    <MenuItem key={idx} value={dp.subjectName}>
-                      {dp.subjectName}
-                    </MenuItem>
-                  ))}
-                </Select>
-                <button
-                  onClick={uploadAttendance}
-                  className={`${classes.adminFormSubmitButton} bg-blue-500`}>
-                  Mark
-                </button>
+
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-primary-50/50 p-6 rounded-[2rem] border border-primary-100/50 mt-8">
+                      <div className="flex-1 w-full sm:w-auto">
+                        <FormField label="Select Subject">
+                          <Select
+                            required
+                            placeholder="Pick Subject"
+                            value={subjectName}
+                            onChange={(e) => setSubjectName(e.target.value)}
+                            options={subjects?.map(s => ({ label: s.subjectName, value: s.subjectName }))}
+                          />
+                        </FormField>
+                      </div>
+                      
+                      <div className="flex items-center gap-4 w-full sm:w-auto pt-6">
+                        <div className="text-sm font-medium text-primary-700 bg-primary-100 px-4 py-2 rounded-full hidden sm:block">
+                          {checkedValue.length} Selected
+                        </div>
+                        <Button
+                          onClick={uploadAttendance}
+                          loading={loading}
+                          disabled={!subjectName || checkedValue.length === 0}
+                          className="flex-1 sm:flex-initial"
+                        >
+                          Mark Attendance
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {!search && !loading && (
+                  <div className="text-center p-12 bg-gray-50/50 rounded-[2rem] border border-dashed border-gray-200">
+                    <div className="p-4 bg-white rounded-2xl w-fit mx-auto shadow-sm mb-4">
+                      <BoyIcon className="w-8 h-8 text-gray-300" />
+                    </div>
+                    <p className="text-gray-400 font-medium">Select criteria to fetch student list</p>
+                  </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
         </div>
       </div>

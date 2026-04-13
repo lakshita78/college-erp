@@ -5,10 +5,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateAdmin } from "../../../../redux/actions/adminActions";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { useNavigate } from "react-router-dom";
-import { MenuItem, Select } from "@mui/material";
 import Spinner from "../../../../utils/Spinner";
 import { SET_ERRORS } from "../../../../redux/actionTypes";
-import * as classes from "../../../../utils/styles";
+
+// New UI Components
+import FormField from "../../../ui/Form/FormField";
+import Input from "../../../ui/Form/Input";
+import Select from "../../../ui/Form/Select";
+import Button from "../../../ui/Form/Button";
+import FormHeader from "../../../ui/Form/FormHeader";
 
 const Body = () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -48,7 +53,6 @@ const Body = () => {
       setLoading(false);
     } else {
       dispatch(updateAdmin(value, navigate));
-
       alert("Kindly login again to see updates");
     }
   };
@@ -63,137 +67,122 @@ const Body = () => {
 
   useEffect(() => {
     dispatch({ type: SET_ERRORS, payload: {} });
-  }, []);
+  }, [dispatch]);
 
   return (
-    <div className="">
-      <div className="space-y-5">
-        <div className="flex  items-center justify-between mr-8">
-          <div className="flex space-x-2 text-gray-400">
-            <SecurityUpdateIcon />
-            <h1>Update</h1>
+    <div className="animate-fade-in max-w-5xl mx-auto px-4 sm:px-6">
+      <div className="space-y-8">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3 text-primary-600">
+            <div className="p-2 bg-primary-500/10 rounded-xl">
+              <SecurityUpdateIcon className="w-6 h-6" />
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900">Update Profile</h1>
           </div>
 
-          <div
+          <Button
+            variant="ghost"
             onClick={() => navigate("/admin/update/password")}
-            className="flex space-x-2 cursor-pointer">
-            <VisibilityOffIcon />
-            <h1 className="font-bold">Password</h1>
-          </div>
+            className="flex items-center gap-2"
+          >
+            <VisibilityOffIcon className="w-4 h-4" />
+            <span>Update Password</span>
+          </Button>
         </div>
 
-        <div className=" bg-white/70 backdrop-blur-md flex flex-col rounded-3xl shadow-infix p-10 ">
-          <form className={classes.adminForm0} onSubmit={handleSubmit}>
-            <div className={classes.adminForm1}>
-              <div className={classes.adminForm2l}>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Name :</h1>
-                  <input
-                    placeholder={user.result?.name}
-                    className={classes.adminInput}
-                    type="text"
-                    value={value.name}
-                    onChange={(e) =>
-                      setValue({ ...value, name: e.target.value })
-                    }
-                  />
+        <div className="bg-white/70 backdrop-blur-md rounded-[2.5rem] shadow-infix border border-white/50 p-8 lg:p-12">
+          <form className="space-y-12" onSubmit={handleSubmit}>
+            <div className="space-y-8">
+              <FormHeader title="Personal Information" />
+
+              <div className="grid md:grid-cols-2 gap-x-12 gap-y-6">
+                <div className="space-y-6">
+                  <FormField label="Full Name" error={error.name}>
+                    <Input
+                      placeholder={user.result?.name || "Enter your name"}
+                      value={value.name}
+                      onChange={(e) => setValue({ ...value, name: e.target.value })}
+                    />
+                  </FormField>
+
+                  <FormField label="Date of Birth" error={error.dob}>
+                    <Input
+                      placeholder={user.result?.dob || "DD/MM/YYYY"}
+                      value={value.dob}
+                      onChange={(e) => setValue({ ...value, dob: e.target.value })}
+                    />
+                  </FormField>
+
+                  <FormField label="Email Address">
+                    <Input
+                      placeholder={user.result?.email}
+                      value={user.result?.email}
+                      disabled
+                      className="bg-gray-50 dark:bg-dark-800/50 cursor-not-allowed opacity-70"
+                    />
+                  </FormField>
                 </div>
 
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>DOB :</h1>
-                  <input
-                    placeholder={user.result?.dob}
-                    className={classes.adminInput}
-                    type="text"
-                    value={value.dob}
-                    onChange={(e) =>
-                      setValue({ ...value, dob: e.target.value })
-                    }
-                  />
-                </div>
+                <div className="space-y-6">
+                  <FormField label="Department" error={error.department}>
+                    <Select
+                      placeholder="Select Department"
+                      value={value.department}
+                      onChange={(e) => setValue({ ...value, department: e.target.value })}
+                      options={departments?.map(dp => ({ label: dp.department, value: dp.department }))}
+                    />
+                  </FormField>
 
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Email :</h1>
-                  <input
-                    placeholder={user.result?.email}
-                    disabled
-                    className={classes.adminInput}
-                    type="text"
-                  />
-                </div>
-              </div>
+                  <FormField label="Contact Number" error={error.contactNumber}>
+                    <Input
+                      placeholder={user.result?.contactNumber || "Enter contact number"}
+                      value={value.contactNumber}
+                      onChange={(e) => setValue({ ...value, contactNumber: e.target.value })}
+                    />
+                  </FormField>
 
-              <div className={classes.adminForm2r}>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Department :</h1>
-                  <Select
-                    displayEmpty
-                    sx={{ height: 36 }}
-                    inputProps={{ "aria-label": "Without label" }}
-                    value={value.department}
-                    onChange={(e) =>
-                      setValue({ ...value, department: e.target.value })
-                    }>
-                    <MenuItem value="">None</MenuItem>
-                    {departments?.map((dp, idx) => (
-                      <MenuItem key={idx} value={dp.department}>
-                        {dp.department}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </div>
-
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Contact Number :</h1>
-                  <input
-                    placeholder={user.result?.contactNumber}
-                    className={classes.adminInput}
-                    type="text"
-                    value={value.contactNumber}
-                    onChange={(e) =>
-                      setValue({ ...value, contactNumber: e.target.value })
-                    }
-                  />
-                </div>
-
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Avatar :</h1>
-                  <FileBase
-                    type="file"
-                    multiple={false}
-                    onDone={({ base64 }) =>
-                      setValue({ ...value, avatar: base64 })
-                    }
-                  />
+                  <FormField label="Profile Picture" error={error.avatar}>
+                    <div className="relative group p-4 border-2 border-dashed border-gray-200 rounded-2xl hover:border-primary-500 transition-colors">
+                      <div className="flex flex-col items-center gap-2">
+                        <FileBase
+                          type="file"
+                          multiple={false}
+                          onDone={({ base64 }) => setValue({ ...value, avatar: base64 })}
+                        />
+                        {value.avatar && (
+                          <div className="mt-2 w-16 h-16 rounded-full overflow-hidden border-2 border-primary-500/20 shadow-sm">
+                            <img src={value.avatar} alt="Preview" className="w-full h-full object-cover" />
+                          </div>
+                        )}
+                        <p className="text-xs text-gray-400">Click to upload or drag and drop</p>
+                      </div>
+                    </div>
+                  </FormField>
                 </div>
               </div>
             </div>
 
-            <div className={classes.adminFormButton}>
-              <button className={classes.adminFormSubmitButton} type="submit">
-                Submit
-              </button>
-
-              <button
+            {/* Footer Actions */}
+            <div className="flex items-center justify-end gap-4 pt-8 border-t border-gray-100">
+              <Button
+                variant="ghost"
                 onClick={() => navigate("/admin/profile")}
-                className={classes.adminFormClearButton}
-                type="button">
+              >
                 Cancel
-              </button>
+              </Button>
+              <Button
+                type="submit"
+                loading={loading}
+              >
+                Save Changes
+              </Button>
             </div>
 
-            <div className={classes.loadingAndError}>
-              {loading && (
-                <Spinner
-                  message="Updating"
-                  height={30}
-                  width={150}
-                  color="#111111"
-                  messageColor="blue"
-                />
-              )}
+            <div className="flex justify-center mt-6">
               {error.backendError && (
-                <p className="text-red-500">{error.backendError}</p>
+                <div className="p-4 bg-rose-50 text-rose-500 rounded-2xl font-medium border border-rose-100 animate-shake text-sm">
+                  {error.backendError}
+                </div>
               )}
             </div>
           </form>

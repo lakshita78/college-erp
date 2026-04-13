@@ -3,11 +3,15 @@ import EngineeringIcon from "@mui/icons-material/Engineering";
 import { useDispatch, useSelector } from "react-redux";
 import FileBase from "react-file-base64";
 import { addAdmin } from "../../../redux/actions/adminActions";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import Spinner from "../../../utils/Spinner";
-import * as classes from "../../../utils/styles";
 import { ADD_ADMIN, SET_ERRORS } from "../../../redux/actionTypes";
+
+// New UI Components
+import FormField from "../../ui/Form/FormField";
+import Input from "../../ui/Form/Input";
+import Select from "../../ui/Form/Select";
+import Button from "../../ui/Form/Button";
+import FormHeader from "../../ui/Form/FormHeader";
 
 const Body = () => {
   const dispatch = useDispatch();
@@ -24,10 +28,11 @@ const Body = () => {
     avatar: "",
     joiningYear: Date().split(" ")[3],
   });
+
   useEffect(() => {
     if (Object.keys(store.errors).length !== 0) {
       setError(store.errors);
-      setValue({ ...value, email: "" });
+      setValue((prev) => ({ ...prev, email: "" }));
     }
   }, [store.errors]);
 
@@ -59,152 +64,115 @@ const Body = () => {
     } else {
       setLoading(true);
     }
-  }, [store.errors, store.admin.adminAdded]);
+  }, [store.errors, store.admin.adminAdded, dispatch]);
 
   useEffect(() => {
     dispatch({ type: SET_ERRORS, payload: {} });
-  }, []);
+  }, [dispatch]);
 
   return (
-    <div className="">
-      <div className="space-y-5">
-        <div className="flex text-gray-400 items-center space-x-2">
-          <EngineeringIcon />
-          <h1>Add Admin</h1>
+    <div className="animate-fade-in max-w-5xl mx-auto px-4 sm:px-6">
+      <div className="space-y-8">
+        <div className="flex items-center gap-3 text-primary-600">
+          <div className="p-2 bg-primary-500/10 rounded-xl">
+            <EngineeringIcon className="w-6 h-6" />
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900">Add Admin</h1>
         </div>
-        <div className=" bg-white/70 backdrop-blur-md flex flex-col rounded-3xl shadow-infix p-10 ">
-          <form className={classes.adminForm0} onSubmit={handleSubmit}>
-            <div className={classes.adminForm1}>
-              <div className={classes.adminForm2l}>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Name :</h1>
 
-                  <input
+        <div className="bg-white/70 backdrop-blur-md rounded-[2.5rem] shadow-infix border border-white/50 p-8 lg:p-12">
+          <form className="space-y-12" onSubmit={handleSubmit}>
+            <div className="space-y-8">
+              <FormHeader title="Admin Information" />
+
+              <div className="grid md:grid-cols-2 gap-x-12 gap-y-6">
+                <FormField label="Full Name" required error={error.name}>
+                  <Input
                     placeholder="Full Name"
                     required
-                    className={classes.adminInput}
-                    type="text"
                     value={value.name}
-                    onChange={(e) =>
-                      setValue({ ...value, name: e.target.value })
-                    }
+                    onChange={(e) => setValue({ ...value, name: e.target.value })}
                   />
-                </div>
+                </FormField>
 
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>DOB :</h1>
+                <FormField label="Email Address" required error={error.email}>
+                  <Input
+                    required
+                    placeholder="Email"
+                    type="email"
+                    value={value.email}
+                    onChange={(e) => setValue({ ...value, email: e.target.value })}
+                  />
+                </FormField>
 
-                  <input
-                    placeholder="DD/MM/YYYY"
-                    className={classes.adminInput}
+                <FormField label="Date of Birth" required error={error.dob}>
+                  <Input
                     required
                     type="date"
                     value={value.dob}
-                    onChange={(e) =>
-                      setValue({ ...value, dob: e.target.value })
-                    }
+                    onChange={(e) => setValue({ ...value, dob: e.target.value })}
                   />
-                </div>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Email :</h1>
+                </FormField>
 
-                  <input
-                    placeholder="Email"
-                    required
-                    className={classes.adminInput}
-                    type="email"
-                    value={value.email}
-                    onChange={(e) =>
-                      setValue({ ...value, email: e.target.value })
-                    }
-                  />
-                </div>
-              </div>
-              <div className={classes.adminForm2r}>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Department :</h1>
+                <FormField label="Department" required error={error.department}>
                   <Select
                     required
-                    displayEmpty
-                    sx={{ height: 36 }}
-                    inputProps={{ "aria-label": "Without label" }}
+                    placeholder="Select Department"
                     value={value.department}
-                    onChange={(e) =>
-                      setValue({ ...value, department: e.target.value })
-                    }>
-                    <MenuItem value="">None</MenuItem>
-                    {departments?.map((dp, idx) => (
-                      <MenuItem key={idx} value={dp.department}>
-                        {dp.department}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </div>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Contact Number :</h1>
+                    onChange={(e) => setValue({ ...value, department: e.target.value })}
+                    options={departments?.map(dp => ({ label: dp.department, value: dp.department }))}
+                  />
+                </FormField>
 
-                  <input
+                <FormField label="Contact Number" required error={error.contactNumber}>
+                  <Input
                     required
                     placeholder="Contact Number"
-                    className={classes.adminInput}
                     type="number"
                     value={value.contactNumber}
-                    onChange={(e) =>
-                      setValue({ ...value, contactNumber: e.target.value })
-                    }
+                    onChange={(e) => setValue({ ...value, contactNumber: e.target.value })}
                   />
-                </div>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Avatar :</h1>
+                </FormField>
 
-                  <FileBase
-                    type="file"
-                    multiple={false}
-                    onDone={({ base64 }) =>
-                      setValue({ ...value, avatar: base64 })
-                    }
-                  />
-                </div>
+                <FormField label="Admin Avatar">
+                  <div className="w-full px-5 py-2.5 bg-white/50 border border-dashed border-gray-300 rounded-2xl hover:bg-white transition-colors text-sm">
+                    <FileBase
+                      type="file"
+                      multiple={false}
+                      onDone={({ base64 }) => setValue({ ...value, avatar: base64 })}
+                    />
+                  </div>
+                </FormField>
               </div>
             </div>
-            <div className={classes.adminFormButton}>
-              <button className={classes.adminFormSubmitButton} type="submit">
-                Submit
-              </button>
-              <button
+
+            {/* Footer Actions */}
+            <div className="flex items-center justify-end gap-4 pt-8 border-t border-gray-100">
+              <Button
+                variant="ghost"
                 onClick={() => {
                   setValue({
-                    name: "",
-                    dob: "",
-                    email: "",
-                    department: "",
-                    contactNumber: "",
-                    avatar: "",
-                    joiningYear: Date().split(" ")[3],
-                    password: "",
-                    username: "",
+                    name: "", dob: "", email: "", department: "", contactNumber: "",
+                    avatar: "", joiningYear: Date().split(" ")[3], password: "", username: "",
                   });
                   setError({});
                 }}
-                className={classes.adminFormClearButton}
-                type="button">
-                Clear
-              </button>
+              >
+                Clear Form
+              </Button>
+              <Button
+                type="submit"
+                loading={loading}
+              >
+                Save Admin
+              </Button>
             </div>
-            <div className={classes.loadingAndError}>
-              {loading && (
-                <Spinner
-                  message="Adding Admin"
-                  height={30}
-                  width={150}
-                  color="#111111"
-                  messageColor="blue"
-                />
-              )}
+
+            <div className="flex justify-center mt-6">
               {(error.emailError || error.backendError) && (
-                <p className="text-red-500">
+                <div className="p-4 bg-rose-50 text-rose-500 rounded-2xl font-medium border border-rose-100 animate-shake text-sm">
                   {error.emailError || error.backendError}
-                </p>
+                </div>
               )}
             </div>
           </form>

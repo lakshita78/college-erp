@@ -2,11 +2,16 @@ import React, { useEffect, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { useDispatch, useSelector } from "react-redux";
 import { createTest } from "../../../redux/actions/facultyActions";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import Spinner from "../../../utils/Spinner";
 import { ADD_TEST, SET_ERRORS } from "../../../redux/actionTypes";
-import * as classes from "../../../utils/styles";
+
+// New UI Components
+import FormField from "../../ui/Form/FormField";
+import Input from "../../ui/Form/Input";
+import Select from "../../ui/Form/Select";
+import Button from "../../ui/Form/Button";
+import FormHeader from "../../ui/Form/FormHeader";
+
 const Body = () => {
   const dispatch = useDispatch();
   const store = useSelector((state) => state);
@@ -26,15 +31,15 @@ const Body = () => {
   useEffect(() => {
     if (Object.keys(store.errors).length !== 0) {
       setError(store.errors);
-      setValue({
+      setValue((prev) => ({
+        ...prev,
         subjectCode: "",
         section: "",
         year: "",
         test: "",
         totalMarks: "",
         date: "",
-        department: user.result.department,
-      });
+      }));
     }
   }, [store.errors]);
 
@@ -65,136 +70,112 @@ const Body = () => {
     } else {
       setLoading(true);
     }
-  }, [store.errors, store.faculty.testAdded]);
+  }, [store.errors, store.faculty.testAdded, dispatch, user.result.department]);
 
   useEffect(() => {
     dispatch({ type: SET_ERRORS, payload: {} });
-  }, []);
+  }, [dispatch]);
 
   return (
-    <div className="">
-      <div className="space-y-5">
-        <div className="flex text-gray-400 items-center space-x-2">
-          <AddIcon />
-          <h1>Create Test</h1>
+    <div className="animate-fade-in max-w-5xl mx-auto px-4 sm:px-6">
+      <div className="space-y-8">
+        <div className="flex items-center gap-3 text-primary-600">
+          <div className="p-2 bg-primary-500/10 rounded-xl">
+            <AddIcon className="w-6 h-6" />
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900">Create Test</h1>
         </div>
-        <div className=" bg-white/70 backdrop-blur-md flex flex-col rounded-3xl shadow-infix p-10 ">
-          <form className={classes.adminForm0} onSubmit={handleSubmit}>
-            <div className={classes.adminForm1}>
-              <div className={classes.adminForm2l}>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Test Name :</h1>
 
-                  <input
-                    placeholder="Test Name"
-                    required
-                    className={classes.adminInput}
-                    type="text"
-                    value={value.test}
-                    onChange={(e) =>
-                      setValue({ ...value, test: e.target.value })
-                    }
-                  />
+        <div className="bg-white/70 backdrop-blur-md rounded-[2.5rem] shadow-infix border border-white/50 p-8 lg:p-12">
+          <form className="space-y-12" onSubmit={handleSubmit}>
+            <div className="space-y-8">
+              <FormHeader title="Test Configuration" />
+
+              <div className="grid md:grid-cols-2 gap-x-12 gap-y-6">
+                <div className="space-y-6">
+                  <FormField label="Test Name" required error={error.test}>
+                    <Input
+                      required
+                      placeholder="e.g. Mid-term Examination"
+                      value={value.test}
+                      onChange={(e) => setValue({ ...value, test: e.target.value })}
+                    />
+                  </FormField>
+
+                  <FormField label="Subject Code" required error={error.subjectCode}>
+                    <Input
+                      required
+                      placeholder="e.g. CS-101"
+                      value={value.subjectCode}
+                      onChange={(e) => setValue({ ...value, subjectCode: e.target.value })}
+                    />
+                  </FormField>
+
+                  <FormField label="Department">
+                    <Input
+                      value={user.result.department}
+                      disabled
+                      className="bg-gray-50 dark:bg-dark-800/50 cursor-not-allowed opacity-70"
+                    />
+                  </FormField>
+
+                  <FormField label="Year" required error={error.year}>
+                    <Select
+                      required
+                      placeholder="Select Academic Year"
+                      value={value.year}
+                      onChange={(e) => setValue({ ...value, year: e.target.value })}
+                      options={[
+                        { label: "1st Year", value: "1" },
+                        { label: "2nd Year", value: "2" },
+                        { label: "3rd Year", value: "3" },
+                        { label: "4th Year", value: "4" }
+                      ]}
+                    />
+                  </FormField>
                 </div>
 
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Subject Code :</h1>
+                <div className="space-y-6">
+                  <FormField label="Total Marks" required error={error.totalMarks}>
+                    <Input
+                      required
+                      type="number"
+                      placeholder="e.g. 100"
+                      value={value.totalMarks}
+                      onChange={(e) => setValue({ ...value, totalMarks: e.target.value })}
+                    />
+                  </FormField>
 
-                  <input
-                    required
-                    placeholder="Subject Code"
-                    className={classes.adminInput}
-                    type="text"
-                    value={value.subjectCode}
-                    onChange={(e) =>
-                      setValue({ ...value, subjectCode: e.target.value })
-                    }
-                  />
-                </div>
+                  <FormField label="Date of Test" required error={error.date}>
+                    <Input
+                      required
+                      type="date"
+                      value={value.date}
+                      onChange={(e) => setValue({ ...value, date: e.target.value })}
+                    />
+                  </FormField>
 
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Department :</h1>
-
-                  <input
-                    required
-                    placeholder={user.result.department}
-                    disabled
-                    className={classes.adminInput}
-                    type="text"
-                    value={user.result.department}
-                  />
-                </div>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Year :</h1>
-                  <Select
-                    required
-                    displayEmpty
-                    sx={{ height: 36 }}
-                    inputProps={{ "aria-label": "Without label" }}
-                    value={value.year}
-                    onChange={(e) =>
-                      setValue({ ...value, year: e.target.value })
-                    }>
-                    <MenuItem value="">None</MenuItem>
-                    <MenuItem value="1">1</MenuItem>
-                    <MenuItem value="2">2</MenuItem>
-                    <MenuItem value="3">3</MenuItem>
-                    <MenuItem value="4">4</MenuItem>
-                  </Select>
-                </div>
-              </div>
-              <div className={classes.adminForm2r}>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Total Marks :</h1>
-
-                  <input
-                    required
-                    placeholder="Total Marks"
-                    className={classes.adminInput}
-                    type="number"
-                    value={value.totalMarks}
-                    onChange={(e) =>
-                      setValue({ ...value, totalMarks: e.target.value })
-                    }
-                  />
-                </div>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Date :</h1>
-
-                  <input
-                    required
-                    className={classes.adminInput}
-                    type="date"
-                    value={value.date}
-                    onChange={(e) =>
-                      setValue({ ...value, date: e.target.value })
-                    }
-                  />
-                </div>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Section :</h1>
-                  <Select
-                    required
-                    displayEmpty
-                    sx={{ height: 36 }}
-                    inputProps={{ "aria-label": "Without label" }}
-                    value={value.section}
-                    onChange={(e) =>
-                      setValue({ ...value, section: e.target.value })
-                    }>
-                    <MenuItem value="">None</MenuItem>
-                    <MenuItem value="1">1</MenuItem>
-                    <MenuItem value="2">2</MenuItem>
-                    <MenuItem value="3">3</MenuItem>
-                  </Select>
+                  <FormField label="Section" required error={error.section}>
+                    <Select
+                      required
+                      placeholder="Select Section"
+                      value={value.section}
+                      onChange={(e) => setValue({ ...value, section: e.target.value })}
+                      options={[
+                        { label: "Section 1", value: "1" },
+                        { label: "Section 2", value: "2" },
+                        { label: "Section 3", value: "3" }
+                      ]}
+                    />
+                  </FormField>
                 </div>
               </div>
             </div>
-            <div className={classes.adminFormButton}>
-              <button className={classes.adminFormSubmitButton} type="submit">
-                Submit
-              </button>
-              <button
+
+            {/* Footer Actions */}
+            <div className="flex items-center justify-end gap-4 pt-8 border-t border-gray-100">
+              <Button
+                variant="ghost"
                 onClick={() => {
                   setValue({
                     subjectCode: "",
@@ -203,29 +184,26 @@ const Body = () => {
                     test: "",
                     totalMarks: "",
                     date: "",
-                    department: "",
+                    department: user.result.department,
                   });
                   setError({});
                 }}
-                className={classes.adminFormClearButton}
-                type="button">
-                Clear
-              </button>
+              >
+                Reset Form
+              </Button>
+              <Button
+                type="submit"
+                loading={loading}
+              >
+                Create Test
+              </Button>
             </div>
-            <div className={classes.loadingAndError}>
-              {loading && (
-                <Spinner
-                  message="Creating Test"
-                  height={30}
-                  width={150}
-                  color="#111111"
-                  messageColor="blue"
-                />
-              )}
+
+            <div className="flex justify-center mt-6">
               {(error.testError || error.backendError) && (
-                <p className="text-red-500">
+                <div className="p-4 bg-rose-50 text-rose-500 rounded-2xl font-medium border border-rose-100 animate-shake text-sm">
                   {error.testError || error.backendError}
-                </p>
+                </div>
               )}
             </div>
           </form>
