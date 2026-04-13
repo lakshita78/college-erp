@@ -15,7 +15,7 @@ const Header = ({ onMenuClick, user = { name: 'John Doe', role: 'Administrator',
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState(document.documentElement.classList.contains('dark'));
 
   const notifications = [
     { id: 1, title: 'New student registration', message: '5 new students registered today', time: '2 min ago', type: 'info' },
@@ -24,7 +24,8 @@ const Header = ({ onMenuClick, user = { name: 'John Doe', role: 'Administrator',
   ];
 
   const toggleTheme = () => {
-    setIsDark(!isDark);
+    const newIsDark = !isDark;
+    setIsDark(newIsDark);
     document.documentElement.classList.toggle('dark');
   };
 
@@ -42,7 +43,7 @@ const Header = ({ onMenuClick, user = { name: 'John Doe', role: 'Administrator',
   };
 
   return (
-    <header className="fixed top-0 right-0 left-0 lg:left-64 h-16 bg-white/80 dark:bg-dark-800/80 backdrop-blur-xl border-b border-light-600 dark:border-dark-600 z-30 transition-all duration-300">
+    <header className="fixed top-0 right-0 left-0 lg:left-64 h-16 bg-white/70 dark:bg-dark-800/70 backdrop-blur-md border-b border-white dark:border-dark-600 z-30 transition-all duration-300">
       <div className="flex items-center justify-between h-full px-4 lg:px-6">
         {/* Left Section - Mobile Menu & Search */}
         <div className="flex items-center gap-4 flex-1">
@@ -55,13 +56,13 @@ const Header = ({ onMenuClick, user = { name: 'John Doe', role: 'Administrator',
 
           {/* Search Bar */}
           <div className="relative max-w-md w-full hidden sm:block">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary-400 dark:text-primary-400" />
             <input
               type="text"
-              placeholder="Search students, faculty, courses..."
+              placeholder="Quick search..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-light-700 dark:bg-dark-700 border border-light-600 dark:border-dark-600 rounded-xl text-sm text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-all duration-200"
+              className="w-full pl-10 pr-4 py-2 bg-primary-100/30 dark:bg-dark-700 border border-primary-100 dark:border-dark-600 rounded-2xl text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10 transition-all duration-300"
             />
           </div>
         </div>

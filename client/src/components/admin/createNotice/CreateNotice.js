@@ -1,20 +1,13 @@
 import React from "react";
 
-import Header from "../Header";
-import Sidebar from "../Sidebar";
+import Layout from "../../ui/Layout/Layout";
 import Body from "./Body";
 
 const CreateNotice = () => {
   return (
-    <div className="bg-light-800 h-screen flex items-center justify-center">
-      <div className="flex flex-col bg-white h-5/6 w-[95%] rounded-2xl shadow-2xl space-y-6 overflow-y-hidden">
-        <Header title="Create Notice" />
-        <div className="flex flex-[0.95]">
-          <Sidebar />
-          <Body />
-        </div>
-      </div>
-    </div>
+    <Layout userRole="admin">
+      <Body />
+    </Layout>
   );
 };
 

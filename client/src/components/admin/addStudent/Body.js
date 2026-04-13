@@ -83,284 +83,290 @@ const Body = () => {
   }, []);
 
   return (
-    <div className="flex-[0.8] mt-3">
-      <div className="space-y-5">
-        <div className="flex text-gray-400 items-center space-x-2">
-          <AddIcon />
-          <h1>Add Student</h1>
+    <div className="animate-fade-in max-w-5xl mx-auto px-4 sm:px-6">
+      <div className="space-y-8">
+        <div className="flex items-center gap-3 text-primary-600">
+          <div className="p-2 bg-primary-500/10 rounded-xl">
+            <AddIcon className="w-6 h-6" />
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900">Add Student</h1>
         </div>
-        <div className=" mr-10 bg-white flex flex-col rounded-xl ">
-          <form
-            className={`${classes.adminForm0} scrollbar-thin scrollbar-track-white scrollbar-thumb-black overflow-y-scroll h-[30rem]`}
-            onSubmit={handleSubmit}>
-            <div className={classes.adminForm1}>
-              <div className={classes.adminForm2l}>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Name :</h1>
 
+        <div className="bg-white/70 backdrop-blur-md rounded-[2.5rem] shadow-infix border border-white/50 p-8 lg:p-12">
+          <form className="space-y-12" onSubmit={handleSubmit}>
+            {/* Section: Student Information */}
+            <div className="space-y-8">
+              <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+                <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest">
+                  Student Information
+                </h2>
+                <div className="h-px flex-1 bg-gray-100 ml-6" />
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-x-12 gap-y-6">
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
+                    Full Name
+                  </label>
                   <input
-                    placeholder="Full Name"
+                    placeholder="e.g. John Doe"
                     required
-                    className={classes.adminInput}
+                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none"
                     type="text"
                     value={value.name}
-                    onChange={(e) =>
-                      setValue({ ...value, name: e.target.value })
-                    }
+                    onChange={(e) => setValue({ ...value, name: e.target.value })}
                   />
                 </div>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>DOB :</h1>
 
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
+                    Email Address
+                  </label>
                   <input
                     required
-                    placeholder="DD/MM/YYYY"
-                    className={classes.adminInput}
-                    type="date"
-                    value={value.dob}
-                    onChange={(e) =>
-                      setValue({ ...value, dob: e.target.value })
-                    }
-                  />
-                </div>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Email :</h1>
-
-                  <input
-                    required
-                    placeholder="Email"
-                    className={classes.adminInput}
+                    placeholder="example@gmail.com"
+                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none"
                     type="email"
                     value={value.email}
-                    onChange={(e) =>
-                      setValue({ ...value, email: e.target.value })
-                    }
+                    onChange={(e) => setValue({ ...value, email: e.target.value })}
                   />
                 </div>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Batch :</h1>
 
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
+                    Date of Birth
+                  </label>
                   <input
                     required
-                    placeholder="yyyy-yyyy"
-                    className={classes.adminInput}
-                    type="text"
-                    value={value.batch}
-                    onChange={(e) =>
-                      setValue({ ...value, batch: e.target.value })
-                    }
+                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none leading-none"
+                    type="date"
+                    value={value.dob}
+                    onChange={(e) => setValue({ ...value, dob: e.target.value })}
                   />
                 </div>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Father's Name :</h1>
 
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
+                    Gender
+                  </label>
+                  <select
+                    required
+                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none appearance-none cursor-pointer"
+                    value={value.gender}
+                    onChange={(e) => setValue({ ...value, gender: e.target.value })}>
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
+                    Contact Number
+                  </label>
                   <input
                     required
-                    placeholder="Father's Name"
-                    className={classes.adminInput}
-                    type="text"
-                    value={value.fatherName}
-                    onChange={(e) =>
-                      setValue({ ...value, fatherName: e.target.value })
-                    }
+                    placeholder="+1234567890"
+                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none"
+                    type="number"
+                    value={value.contactNumber}
+                    onChange={(e) => setValue({ ...value, contactNumber: e.target.value })}
                   />
                 </div>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Mother's Name :</h1>
 
-                  <input
-                    required
-                    placeholder="Mother's Name"
-                    className={classes.adminInput}
-                    type="text"
-                    value={value.motherName}
-                    onChange={(e) =>
-                      setValue({ ...value, motherName: e.target.value })
-                    }
-                  />
-                </div>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Year :</h1>
-                  <Select
-                    required
-                    displayEmpty
-                    sx={{ height: 36 }}
-                    inputProps={{ "aria-label": "Without label" }}
-                    value={value.year}
-                    onChange={(e) =>
-                      setValue({ ...value, year: e.target.value })
-                    }>
-                    <MenuItem value="">None</MenuItem>
-                    <MenuItem value="1">1</MenuItem>
-                    <MenuItem value="2">2</MenuItem>
-                    <MenuItem value="3">3</MenuItem>
-                    <MenuItem value="4">4</MenuItem>
-                  </Select>
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
+                    Student Avatar
+                  </label>
+                  <div className="w-full px-5 py-2.5 bg-white/50 border border-dashed border-gray-300 rounded-2xl hover:bg-white transition-colors">
+                    <FileBase
+                      type="file"
+                      multiple={false}
+                      onDone={({ base64 }) => setValue({ ...value, avatar: base64 })}
+                    />
+                  </div>
                 </div>
               </div>
-              <div className={classes.adminForm2r}>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Department :</h1>
-                  <Select
-                    required
-                    displayEmpty
-                    sx={{ height: 36 }}
-                    inputProps={{ "aria-label": "Without label" }}
-                    value={value.department}
-                    onChange={(e) =>
-                      setValue({ ...value, department: e.target.value })
-                    }>
-                    <MenuItem value="">None</MenuItem>
-                    {departments?.map((dp, idx) => (
-                      <MenuItem key={idx} value={dp.department}>
-                        {dp.department}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </div>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Gender :</h1>
-                  <Select
-                    required
-                    displayEmpty
-                    sx={{ height: 36 }}
-                    inputProps={{ "aria-label": "Without label" }}
-                    value={value.gender}
-                    onChange={(e) =>
-                      setValue({ ...value, gender: e.target.value })
-                    }>
-                    <MenuItem value="">None</MenuItem>
-                    <MenuItem value="Male">Male</MenuItem>
-                    <MenuItem value="Female">Female</MenuItem>
-                    <MenuItem value="Other">Other</MenuItem>
-                  </Select>
-                </div>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Contact Number :</h1>
+            </div>
 
+            {/* Section: Academic Details */}
+            <div className="space-y-8">
+              <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+                <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest">
+                  Academic Details
+                </h2>
+                <div className="h-px flex-1 bg-gray-100 ml-6" />
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-x-12 gap-y-6">
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
+                    Department
+                  </label>
+                  <select
+                    required
+                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none appearance-none cursor-pointer"
+                    value={value.department}
+                    onChange={(e) => setValue({ ...value, department: e.target.value })}>
+                    <option value="">Select Department</option>
+                    {departments?.map((dp, idx) => (
+                      <option key={idx} value={dp.department}>
+                        {dp.department}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
+                    Batch Year
+                  </label>
+                  <input
+                    required
+                    placeholder="2022-2026"
+                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none"
+                    type="text"
+                    value={value.batch}
+                    onChange={(e) => setValue({ ...value, batch: e.target.value })}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
+                    Academic Year
+                  </label>
+                  <select
+                    required
+                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none appearance-none cursor-pointer"
+                    value={value.year}
+                    onChange={(e) => setValue({ ...value, year: e.target.value })}>
+                    <option value="">Select Year</option>
+                    <option value="1">1st Year</option>
+                    <option value="2">2nd Year</option>
+                    <option value="3">3rd Year</option>
+                    <option value="4">4th Year</option>
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
+                    Section
+                  </label>
+                  <select
+                    required
+                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none appearance-none cursor-pointer"
+                    value={value.section}
+                    onChange={(e) => setValue({ ...value, section: e.target.value })}>
+                    <option value="">Select Section</option>
+                    <option value="1">Section 1</option>
+                    <option value="2">Section 2</option>
+                    <option value="3">Section 3</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Section: Parent Information */}
+            <div className="space-y-8">
+              <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+                <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest">
+                  Parent Information
+                </h2>
+                <div className="h-px flex-1 bg-gray-100 ml-6" />
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-x-12 gap-y-6">
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
+                    Father's Name
+                  </label>
+                  <input
+                    required
+                    placeholder="Full Name"
+                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none"
+                    type="text"
+                    value={value.fatherName}
+                    onChange={(e) => setValue({ ...value, fatherName: e.target.value })}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
+                    Father's Contact
+                  </label>
                   <input
                     required
                     placeholder="Contact Number"
-                    className={classes.adminInput}
-                    type="number"
-                    value={value.contactNumber}
-                    onChange={(e) =>
-                      setValue({ ...value, contactNumber: e.target.value })
-                    }
-                  />
-                </div>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>
-                    Father's Contact Number :
-                  </h1>
-
-                  <input
-                    required
-                    placeholder="Father's Contact Number"
-                    className={classes.adminInput}
+                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none"
                     type="number"
                     value={value.fatherContactNumber}
                     onChange={(e) =>
-                      setValue({
-                        ...value,
-                        fatherContactNumber: e.target.value,
-                      })
+                      setValue({ ...value, fatherContactNumber: e.target.value })
                     }
                   />
                 </div>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>
-                    Mother's Contact Number :
-                  </h1>
 
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
+                    Mother's Name
+                  </label>
                   <input
                     required
-                    placeholder="Father's Contact Number"
-                    className={classes.adminInput}
+                    placeholder="Full Name"
+                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none"
+                    type="text"
+                    value={value.motherName}
+                    onChange={(e) => setValue({ ...value, motherName: e.target.value })}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
+                    Mother's Contact
+                  </label>
+                  <input
+                    required
+                    placeholder="Contact Number"
+                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none"
                     type="number"
                     value={value.motherContactNumber}
                     onChange={(e) =>
-                      setValue({
-                        ...value,
-                        motherContactNumber: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Section :</h1>
-                  <Select
-                    required
-                    displayEmpty
-                    sx={{ height: 36 }}
-                    inputProps={{ "aria-label": "Without label" }}
-                    value={value.section}
-                    onChange={(e) =>
-                      setValue({ ...value, section: e.target.value })
-                    }>
-                    <MenuItem value="">None</MenuItem>
-                    <MenuItem value="1">1</MenuItem>
-                    <MenuItem value="2">2</MenuItem>
-                    <MenuItem value="3">3</MenuItem>
-                  </Select>
-                </div>
-
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Avatar :</h1>
-
-                  <FileBase
-                    type="file"
-                    multiple={false}
-                    onDone={({ base64 }) =>
-                      setValue({ ...value, avatar: base64 })
+                      setValue({ ...value, motherContactNumber: e.target.value })
                     }
                   />
                 </div>
               </div>
             </div>
-            <div className={classes.adminFormButton}>
-              <button className={classes.adminFormSubmitButton} type="submit">
-                Submit
-              </button>
+
+            {/* Footer Actions */}
+            <div className="flex items-center justify-end gap-4 pt-8 border-t border-gray-100">
               <button
+                type="button"
                 onClick={() => {
                   setValue({
-                    name: "",
-                    dob: "",
-                    email: "",
-                    department: "",
-                    contactNumber: "",
-                    avatar: "",
-                    batch: "",
-                    gender: "",
-                    year: "",
-                    fatherName: "",
-                    motherName: "",
-                    section: "",
-                    fatherContactNumber: "",
-                    motherContactNumber: "",
+                    name: "", dob: "", email: "", department: "", contactNumber: "",
+                    avatar: "", batch: "", gender: "", year: "", fatherName: "",
+                    motherName: "", section: "", fatherContactNumber: "", motherContactNumber: "",
                   });
                   setError({});
                 }}
-                className={classes.adminFormClearButton}
-                type="button">
-                Clear
+                className="px-8 py-3 rounded-2xl text-gray-500 font-bold hover:bg-gray-100 transition-all">
+                Clear Form
+              </button>
+              <button
+                type="submit"
+                disabled={loading}
+                className="px-10 py-3 bg-gray-900 text-white font-bold rounded-2xl hover:bg-gray-800 shadow-lg shadow-gray-200 disabled:opacity-50 transition-all">
+                {loading ? "Saving..." : "Save Student"}
               </button>
             </div>
-            <div ref={errorRef} className={classes.loadingAndError}>
-              {loading && (
-                <Spinner
-                  message="Adding Student"
-                  height={30}
-                  width={150}
-                  color="#111111"
-                  messageColor="blue"
-                />
-              )}
+
+            <div ref={errorRef} className="flex justify-center mt-6">
               {(error.emailError || error.backendError) && (
-                <p className="text-red-500">
+                <div className="p-4 bg-rose-50 text-rose-500 rounded-2xl font-medium border border-rose-100 animate-shake">
                   {error.emailError || error.backendError}
-                </p>
+                </div>
               )}
             </div>
           </form>
@@ -371,3 +377,6 @@ const Body = () => {
 };
 
 export default Body;
+
+
+

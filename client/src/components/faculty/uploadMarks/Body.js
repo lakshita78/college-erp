@@ -90,15 +90,15 @@ const Body = () => {
   }, [value.year, value.section]);
 
   return (
-    <div className="flex-[0.8] mt-3">
+    <div className="">
       <div className="space-y-5">
         <div className="flex text-gray-400 items-center space-x-2">
           <BoyIcon />
           <h1>All Students</h1>
         </div>
-        <div className=" mr-10 bg-white grid grid-cols-4 rounded-xl pt-6 pl-6 h-[29.5rem]">
+        <div className=" bg-white/70 backdrop-blur-md flex flex-col lg:flex-row rounded-3xl shadow-infix p-10 gap-10">
           <form
-            className="flex flex-col space-y-2 col-span-1"
+            className="flex flex-col space-y-4 lg:w-80 flex-shrink-0"
             onSubmit={handleSubmit}>
             <label htmlFor="year">Year</label>
             <Select
@@ -148,7 +148,7 @@ const Body = () => {
               Search
             </button>
           </form>
-          <div className="col-span-3 mr-6">
+          <div className="flex-1 overflow-x-hidden">
             <div className={classes.loadingAndError}>
               {loading && (
                 <Spinner
@@ -243,3 +243,6 @@ const Body = () => {
 };
 
 export default Body;
+
+
+

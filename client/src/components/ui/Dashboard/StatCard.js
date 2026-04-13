@@ -44,9 +44,10 @@ const StatCard = ({
     <div
       onClick={onClick}
       className={`
-        relative bg-white dark:bg-dark-800 rounded-2xl p-6 border border-light-600 dark:border-dark-600
-        transition-all duration-200
-        ${onClick ? 'cursor-pointer hover:border-primary-500/50 hover:shadow-light dark:hover:shadow-dark' : ''}
+        relative bg-white/90 backdrop-blur-sm dark:bg-dark-800 rounded-3xl p-6 
+        shadow-infix hover:shadow-infix-hover border border-white dark:border-dark-600
+        transition-all duration-300 transform hover:-translate-y-1
+        ${onClick ? 'cursor-pointer' : ''}
       `}
     >
       {/* Gradient accent on hover */}

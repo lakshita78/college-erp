@@ -19,54 +19,132 @@ import {
 
 const Sidebar = ({ userRole = 'admin' }) => {
   const [collapsed, setCollapsed] = useState(false);
+  const [expandedGroups, setExpandedGroups] = useState(['Academic Management', 'Student Management', 'Faculty Management']);
   const location = useLocation();
 
+  const toggleGroup = (groupLabel) => {
+    setExpandedGroups(prev =>
+      prev.includes(groupLabel)
+        ? prev.filter(g => g !== groupLabel)
+        : [...prev, groupLabel]
+    );
+  };
+
   // Define menu items based on user role
-  const getMenuItems = () => {
-    const baseItems = [
-      { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-      { path: '/users', icon: Users, label: 'Users' },
-      { path: '/orders', icon: ShoppingCart, label: 'Orders' },
-      { path: '/products', icon: Package, label: 'Products' },
-      { path: '/reports', icon: FileText, label: 'Reports' },
+  const getMenuGroups = () => {
+    const adminGroups = [
+      {
+        label: 'Main',
+        items: [
+          { path: '/admin/home', icon: LayoutDashboard, label: 'Dashboard' },
+          { path: '/admin/profile', icon: UserCog, label: 'My Profile' },
+          { path: '/admin/createnotice', icon: Bell, label: 'Notices' },
+        ]
+      },
+      {
+        label: 'Academic Management',
+        icon: GraduationCap,
+        items: [
+          {
+            label: 'Faculty',
+            icon: Users,
+            children: [
+              { path: '/admin/allfaculty', label: 'Our Faculty' },
+              { path: '/admin/addfaculty', label: 'Add Faculty' },
+              { path: '/admin/deletefaculty', label: 'Delete Faculty' },
+            ]
+          },
+          {
+            label: 'Students',
+            icon: Users,
+            children: [
+              { path: '/admin/allstudent', label: 'Our Students' },
+              { path: '/admin/addstudent', label: 'Add Student' },
+              { path: '/admin/deletestudent', label: 'Delete Student' },
+            ]
+          },
+          {
+            label: 'Subjects',
+            icon: BookOpen,
+            children: [
+              { path: '/admin/allsubject', label: 'All Subjects' },
+              { path: '/admin/addsubject', label: 'Add Subject' },
+              { path: '/admin/deletesubject', label: 'Delete Subject' },
+            ]
+          }
+        ]
+      },
+      {
+        label: 'Institution',
+        icon: Building2,
+        items: [
+          {
+            label: 'Departments',
+            icon: Building2,
+            children: [
+              { path: '/admin/adddepartment', label: 'Add Department' },
+              { path: '/admin/deletedepartment', label: 'Delete Department' },
+            ]
+          },
+          {
+            label: 'Administrators',
+            icon: UserCog,
+            children: [
+              { path: '/admin/addadmin', label: 'Add Admin' },
+              { path: '/admin/deleteadmin', label: 'Delete Admin' },
+            ]
+          }
+        ]
+      }
     ];
 
-    const adminItems = [
-      { path: '/admin/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-      { path: '/admin/students', icon: GraduationCap, label: 'Students' },
-      { path: '/admin/faculty', icon: UserCog, label: 'Faculty' },
-      { path: '/admin/departments', icon: Building2, label: 'Departments' },
-      { path: '/admin/subjects', icon: BookOpen, label: 'Subjects' },
-      { path: '/admin/notices', icon: Bell, label: 'Notices' },
+    const facultyGroups = [
+      {
+        label: 'Main',
+        items: [
+          { path: '/faculty/home', icon: LayoutDashboard, label: 'Dashboard' },
+          { path: '/faculty/profile', icon: UserCog, label: 'My Profile' },
+        ]
+      },
+      {
+        label: 'Academic',
+        icon: GraduationCap,
+        items: [
+          { path: '/faculty/createtest', icon: BookOpen, label: 'Create Test' },
+          { path: '/faculty/uploadmarks', icon: FileText, label: 'Upload Marks' },
+          { path: '/faculty/markattendance', icon: Users, label: 'Mark Attendance' },
+        ]
+      }
     ];
 
-    const facultyItems = [
-      { path: '/faculty/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-      { path: '/faculty/marks', icon: FileText, label: 'Upload Marks' },
-      { path: '/faculty/attendance', icon: Users, label: 'Attendance' },
-      { path: '/faculty/tests', icon: BookOpen, label: 'Tests' },
-    ];
-
-    const studentItems = [
-      { path: '/student/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-      { path: '/student/subjects', icon: BookOpen, label: 'My Subjects' },
-      { path: '/student/attendance', icon: Users, label: 'Attendance' },
-      { path: '/student/results', icon: FileText, label: 'Results' },
+    const studentGroups = [
+      {
+        label: 'Main',
+        items: [
+          { path: '/student/home', icon: LayoutDashboard, label: 'Dashboard' },
+          { path: '/student/profile', icon: UserCog, label: 'My Profile' },
+        ]
+      },
+      {
+        label: 'Academic',
+        icon: GraduationCap,
+        items: [
+          { path: '/student/subjectlist', icon: BookOpen, label: 'My Subjects' },
+          { path: '/student/attendance', icon: Users, label: 'My Attendance' },
+          { path: '/student/testresult', icon: FileText, label: 'Test Results' },
+        ]
+      }
     ];
 
     switch (userRole) {
-      case 'admin':
-        return adminItems;
-      case 'faculty':
-        return facultyItems;
-      case 'student':
-        return studentItems;
-      default:
-        return baseItems;
+      case 'admin': return adminGroups;
+      case 'faculty': return facultyGroups;
+      case 'student': return studentGroups;
+      default: return [];
     }
   };
 
-  const menuItems = getMenuItems();
+  const menuGroups = getMenuGroups();
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -76,80 +154,129 @@ const Sidebar = ({ userRole = 'admin' }) => {
 
   return (
     <aside
-      className={`fixed left-0 top-0 h-screen bg-white dark:bg-dark-900 border-r border-light-600 dark:border-dark-600 transition-all duration-300 z-40 ${
+      className={`fixed left-0 top-0 h-screen bg-white border-r border-gray-100 transition-all duration-300 z-40 ${
         collapsed ? 'w-20' : 'w-64'
       }`}
     >
       {/* Logo Section */}
-      <div className="flex items-center justify-between h-16 px-4 border-b border-light-600 dark:border-dark-600">
+      <div className="flex items-center justify-between h-16 px-6 border-b border-gray-50">
         {!collapsed && (
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-accent-purple flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-primary-600 flex items-center justify-center">
               <Building2 className="w-5 h-5 text-white" />
             </div>
-            <span className="text-lg font-semibold text-gray-900 dark:text-white">ERP Portal</span>
+            <span className="text-lg font-bold text-gray-900 tracking-tight">INFIX ERP</span>
           </div>
         )}
         {collapsed && (
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-accent-purple flex items-center justify-center mx-auto">
+          <div className="w-8 h-8 rounded-lg bg-primary-600 flex items-center justify-center mx-auto">
             <Building2 className="w-5 h-5 text-white" />
           </div>
         )}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="p-2 rounded-lg hover:bg-primary-100 dark:hover:bg-dark-600 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+          className="p-1.5 rounded-lg hover:bg-gray-50 text-gray-400 hover:text-gray-600 transition-colors"
         >
           {collapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
         </button>
       </div>
 
       {/* Navigation Menu */}
-      <nav className="flex-1 py-4 px-3 overflow-y-auto scrollbar-thin scrollbar-thumb-light-500 dark:scrollbar-thumb-dark-500 scrollbar-track-light-700 dark:scrollbar-track-dark-700">
-        <ul className="space-y-1">
-          {menuItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = location.pathname === item.path;
+      <nav className="flex-1 py-6 px-4 overflow-y-auto scrollbar-none pb-24">
+        {menuGroups.map((group, idx) => (
+          <div key={idx} className="mb-6 last:mb-0">
+            {!collapsed && (
+              <h3 className="px-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-3">
+                {group.label}
+              </h3>
+            )}
+            <ul className="space-y-1">
+              {group.items.map((item, itemIdx) => {
+                const Icon = item.icon;
+                const isGroupHeader = !!item.children;
+                const isExpanded = expandedGroups.includes(item.label);
+                
+                if (isGroupHeader) {
+                  return (
+                    <li key={itemIdx}>
+                      <button
+                        onClick={() => toggleGroup(item.label)}
+                        className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-200 group ${
+                          isExpanded ? 'bg-gray-50/50 text-gray-900' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+                        }`}
+                      >
+                        <Icon className={`w-4 h-4 ${isExpanded ? 'text-primary-600' : 'text-gray-400 group-hover:text-gray-600'}`} />
+                        {!collapsed && (
+                          <>
+                            <span className="font-medium text-sm flex-1 text-left">{item.label}</span>
+                            <ChevronRight className={`w-3.5 h-3.5 transition-transform duration-200 ${isExpanded ? 'rotate-90 text-primary-600' : 'text-gray-300'}`} />
+                          </>
+                        )}
+                      </button>
+                      
+                      {isExpanded && !collapsed && (
+                        <ul className="mt-1 ml-6 pl-4 border-l border-gray-100 space-y-1 animate-in fade-in slide-in-from-left-2 duration-300">
+                          {item.children.map((child, childIdx) => (
+                            <li key={childIdx}>
+                              <NavLink
+                                to={child.path}
+                                className={({ isActive }) =>
+                                  `flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all duration-200 ${
+                                    isActive
+                                      ? 'text-primary-600 font-semibold bg-primary-50/50'
+                                      : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+                                  }`
+                                }
+                              >
+                                {child.label}
+                              </NavLink>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </li>
+                  );
+                }
 
-            return (
-              <li key={item.path}>
-                <NavLink
-                  to={item.path}
-                  className={({ isActive }) =>
-                    `flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group ${
-                      isActive
-                        ? 'bg-primary-500/10 text-primary-400 border border-primary-500/20'
-                        : 'text-gray-600 dark:text-gray-400 hover:bg-primary-100/50 dark:hover:bg-dark-700 hover:text-gray-900 dark:hover:text-white border border-transparent'
-                    }`
-                  }
-                >
-                  <Icon
-                    className={`w-5 h-5 transition-colors ${
-                      isActive ? 'text-primary-400' : 'text-gray-500 dark:text-gray-500 group-hover:text-gray-900 dark:group-hover:text-white'
-                    }`}
-                  />
-                  {!collapsed && (
-                    <span className="font-medium text-sm text-gray-900 dark:text-white">{item.label}</span>
-                  )}
-                  {isActive && !collapsed && (
-                    <div className="ml-auto w-1.5 h-1.5 rounded-full bg-primary-400" />
-                  )}
-                </NavLink>
-              </li>
-            );
-          })}
-        </ul>
+                return (
+                  <li key={itemIdx}>
+                    <NavLink
+                      to={item.path}
+                      className={({ isActive }) =>
+                        `flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-200 group ${
+                          isActive
+                            ? 'bg-primary-50 text-primary-600 shadow-sm shadow-primary-100/20'
+                            : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+                        }`
+                      }
+                    >
+                      <Icon
+                        className={`w-4 h-4 transition-colors ${
+                          location.pathname === item.path ? 'text-primary-600' : 'text-gray-400 group-hover:text-gray-600'
+                        }`}
+                      />
+                      {!collapsed && (
+                        <span className="font-medium text-sm">{item.label}</span>
+                      )}
+                    </NavLink>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
       </nav>
 
       {/* Bottom Section */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-light-600 dark:border-dark-600">
+      <div className="absolute bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-50">
         <button
           onClick={handleLogout}
-          className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-rose-400 hover:bg-rose-500/10 transition-all duration-200 w-full ${
+          className={`flex items-center gap-3 px-4 py-3 rounded-xl text-rose-500 hover:bg-rose-50 transition-all duration-200 w-full ${
             collapsed ? 'justify-center' : ''
           }`}
         >
-          <LogOut className="w-5 h-5" />
-          {!collapsed && <span className="font-medium text-sm text-gray-900 dark:text-white">Logout</span>}
+          <LogOut className="w-5 h-5 font-bold" />
+          {!collapsed && <span className="font-bold text-xs uppercase tracking-widest mt-0.5">Logout</span>}
         </button>
       </div>
     </aside>

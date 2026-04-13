@@ -26,14 +26,14 @@ const Body = () => {
   const [value, onChange] = useState(new Date());
 
   return (
-    <div className="flex-[0.8] mt-3">
+    <div>
       <div className="space-y-5">
         <div className="flex text-gray-400 items-center space-x-2">
           <HomeIcon />
           <h1>Dashboard</h1>
         </div>
-        <div className="flex flex-col mr-5 space-y-4 overflow-y-auto">
-          <div className="bg-white h-[8rem] rounded-xl shadow-lg grid grid-cols-4 justify-between px-8 items-center space-x-4">
+        <div className="flex flex-col space-y-4">
+          <div className="bg-white/70 backdrop-blur-md rounded-3xl shadow-infix grid grid-cols-4 justify-between px-8 py-6 items-center space-x-4">
             <div className="flex items-center space-x-4 border-r-2">
               <EngineeringIcon
                 className="rounded-full py-2 bg-orange-300"
@@ -118,3 +118,6 @@ const Body = () => {
 };
 
 export default Body;
+
+
+

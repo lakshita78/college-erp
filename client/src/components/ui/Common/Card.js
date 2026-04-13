@@ -15,14 +15,14 @@ const Card = ({
   className = '',
   onClick,
 }) => {
-  const baseStyles = 'bg-white dark:bg-dark-800 rounded-2xl overflow-hidden transition-all duration-200';
+  const baseStyles = 'bg-white/90 backdrop-blur-md dark:bg-dark-800 rounded-3xl overflow-hidden transition-all duration-300 shadow-infix hover:shadow-infix-hover';
 
   const shadows = {
     none: '',
-    sm: 'shadow-dark-sm',
+    sm: 'shadow-infix-sm',
     dark: 'shadow-dark',
-    md: 'shadow-dark-md',
-    lg: 'shadow-dark-lg',
+    md: 'shadow-infix',
+    lg: 'shadow-infix-lg',
   };
 
   const paddings = {

@@ -68,162 +68,180 @@ const Body = () => {
   }, []);
 
   return (
-    <div className="flex-[0.8] mt-3">
-      <div className="space-y-5">
-        <div className="flex text-gray-400 items-center space-x-2">
-          <AddIcon />
-          <h1>Add Faculty</h1>
+    <div className="animate-fade-in max-w-5xl mx-auto px-4 sm:px-6">
+      <div className="space-y-8">
+        <div className="flex items-center gap-3 text-primary-600">
+          <div className="p-2 bg-primary-500/10 rounded-xl">
+            <AddIcon className="w-6 h-6" />
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900">Add Faculty</h1>
         </div>
-        <div className=" mr-10 bg-white flex flex-col rounded-xl ">
-          <form className={classes.adminForm0} onSubmit={handleSubmit}>
-            <div className={classes.adminForm1}>
-              <div className={classes.adminForm2l}>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Name :</h1>
 
+        <div className="bg-white/70 backdrop-blur-md rounded-[2.5rem] shadow-infix border border-white/50 p-8 lg:p-12">
+          <form className="space-y-12" onSubmit={handleSubmit}>
+            {/* Section: Faculty Details */}
+            <div className="space-y-8">
+              <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+                <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest">
+                  Faculty Details
+                </h2>
+                <div className="h-px flex-1 bg-gray-100 ml-6" />
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-x-12 gap-y-6">
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
+                    Full Name
+                  </label>
                   <input
-                    placeholder="Full Name"
+                    placeholder="e.g. Dr. Jane Smith"
                     required
-                    className={classes.adminInput}
+                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none"
                     type="text"
                     value={value.name}
-                    onChange={(e) =>
-                      setValue({ ...value, name: e.target.value })
-                    }
+                    onChange={(e) => setValue({ ...value, name: e.target.value })}
                   />
                 </div>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>DOB :</h1>
 
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
+                    Email Address
+                  </label>
                   <input
-                    placeholder="DD/MM/YYYY"
                     required
-                    className={classes.adminInput}
-                    type="date"
-                    value={value.dob}
-                    onChange={(e) =>
-                      setValue({ ...value, dob: e.target.value })
-                    }
-                  />
-                </div>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Email :</h1>
-
-                  <input
-                    placeholder="Email"
-                    required
-                    className={classes.adminInput}
+                    placeholder="jane.smith@erp.edu"
+                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none"
                     type="email"
                     value={value.email}
-                    onChange={(e) =>
-                      setValue({ ...value, email: e.target.value })
-                    }
+                    onChange={(e) => setValue({ ...value, email: e.target.value })}
                   />
                 </div>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Designation :</h1>
 
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
+                    Date of Birth
+                  </label>
                   <input
-                    placeholder="Designation"
                     required
-                    className={classes.adminInput}
-                    type="text"
-                    value={value.designation}
-                    onChange={(e) =>
-                      setValue({ ...value, designation: e.target.value })
-                    }
+                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none leading-none"
+                    type="date"
+                    value={value.dob}
+                    onChange={(e) => setValue({ ...value, dob: e.target.value })}
                   />
                 </div>
-              </div>
-              <div className={classes.adminForm2r}>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Department :</h1>
-                  <Select
+
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
+                    Gender
+                  </label>
+                  <select
                     required
-                    displayEmpty
-                    sx={{ height: 36 }}
-                    inputProps={{ "aria-label": "Without label" }}
-                    value={value.department}
-                    onChange={(e) =>
-                      setValue({ ...value, department: e.target.value })
-                    }>
-                    <MenuItem value="">None</MenuItem>
-                    {departments?.map((dp, idx) => (
-                      <MenuItem key={idx} value={dp.department}>
-                        {dp.department}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </div>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Gender :</h1>
-                  <Select
-                    required
-                    displayEmpty
-                    sx={{ height: 36 }}
-                    inputProps={{ "aria-label": "Without label" }}
+                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none appearance-none cursor-pointer"
                     value={value.gender}
-                    onChange={(e) =>
-                      setValue({ ...value, gender: e.target.value })
-                    }>
-                    <MenuItem value="">None</MenuItem>
-                    <MenuItem value="Male">Male</MenuItem>
-                    <MenuItem value="Female">Female</MenuItem>
-                    <MenuItem value="Other">Other</MenuItem>
-                  </Select>
+                    onChange={(e) => setValue({ ...value, gender: e.target.value })}>
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
                 </div>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Contact Number :</h1>
 
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
+                    Contact Number
+                  </label>
                   <input
                     required
-                    placeholder="Contact Number"
-                    className={classes.adminInput}
+                    placeholder="+91 9876543210"
+                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none"
                     type="number"
                     value={value.contactNumber}
-                    onChange={(e) =>
-                      setValue({ ...value, contactNumber: e.target.value })
-                    }
+                    onChange={(e) => setValue({ ...value, contactNumber: e.target.value })}
                   />
                 </div>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Avatar :</h1>
 
-                  <FileBase
-                    type="file"
-                    multiple={false}
-                    onDone={({ base64 }) =>
-                      setValue({ ...value, avatar: base64 })
-                    }
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
+                    Faculty Avatar
+                  </label>
+                  <div className="w-full px-5 py-2.5 bg-white/50 border border-dashed border-gray-300 rounded-2xl hover:bg-white transition-colors">
+                    <FileBase
+                      type="file"
+                      multiple={false}
+                      onDone={({ base64 }) => setValue({ ...value, avatar: base64 })}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Section: Institutional Role */}
+            <div className="space-y-8">
+              <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+                <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest">
+                  Institutional Role
+                </h2>
+                <div className="h-px flex-1 bg-gray-100 ml-6" />
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-x-12 gap-y-6">
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
+                    Department
+                  </label>
+                  <select
+                    required
+                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none appearance-none cursor-pointer"
+                    value={value.department}
+                    onChange={(e) => setValue({ ...value, department: e.target.value })}>
+                    <option value="">Select Department</option>
+                    {departments?.map((dp, idx) => (
+                      <option key={idx} value={dp.department}>
+                        {dp.department}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">
+                    Designation
+                  </label>
+                  <input
+                    placeholder="e.g. Assistant Professor"
+                    required
+                    className="w-full px-5 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all outline-none"
+                    type="text"
+                    value={value.designation}
+                    onChange={(e) => setValue({ ...value, designation: e.target.value })}
                   />
                 </div>
               </div>
             </div>
-            <div className={classes.adminFormButton}>
-              <button className={classes.adminFormSubmitButton} type="submit">
-                Submit
-              </button>
+
+            {/* Footer Actions */}
+            <div className="flex items-center justify-end gap-4 pt-8 border-t border-gray-100">
               <button
+                type="button"
                 onClick={() => {
                   setValue({
-                    name: "",
-                    dob: "",
-                    email: "",
-                    department: "",
-                    contactNumber: "",
-                    avatar: "",
-                    joiningYear: Date().split(" ")[3],
-                    password: "",
-                    username: "",
+                    name: "", dob: "", email: "", department: "", contactNumber: "",
+                    avatar: "", joiningYear: Date().split(" ")[3], gender: "", designation: "",
                   });
                   setError({});
                 }}
-                className={classes.adminFormClearButton}
-                type="button">
-                Clear
+                className="px-8 py-3 rounded-2xl text-gray-500 font-bold hover:bg-gray-100 transition-all">
+                Clear Form
+              </button>
+              <button
+                type="submit"
+                disabled={loading}
+                className="px-10 py-3 bg-gray-900 text-white font-bold rounded-2xl hover:bg-gray-800 shadow-lg shadow-gray-200 disabled:opacity-50 transition-all">
+                {loading ? "Saving..." : "Save Faculty"}
               </button>
             </div>
-            <div className={classes.loadingAndError}>
+
+            <div className="flex justify-center mt-6">
               {loading && (
                 <Spinner
                   message="Adding Faculty"
@@ -234,9 +252,9 @@ const Body = () => {
                 />
               )}
               {(error.emailError || error.backendError) && (
-                <p className="text-red-500">
+                <div className="p-4 bg-rose-50 text-rose-500 rounded-2xl font-medium border border-rose-100 animate-shake">
                   {error.emailError || error.backendError}
-                </p>
+                </div>
               )}
             </div>
           </form>
@@ -247,3 +265,6 @@ const Body = () => {
 };
 
 export default Body;
+
+
+

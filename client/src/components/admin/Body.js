@@ -21,13 +21,13 @@ const Body = () => {
   const departments = useSelector((state) => state.admin.allDepartment);
 
   return (
-    <div className="flex-[0.8] mt-3">
+    <div className="">
       <div className="space-y-5">
         <div className="flex text-gray-400 items-center space-x-2">
           <HomeIcon />
           <h1>Dashboard</h1>
         </div>
-        <div className="flex flex-col mr-5 space-y-4 overflow-y-hidden">
+        <div className="flex flex-col space-y-4 overflow-y-hidden">
           <div className="bg-white h-[8rem] rounded-xl shadow-lg grid grid-cols-4 justify-between px-8 items-center space-x-4">
             <div className="flex items-center space-x-4 border-r-2">
               <EngineeringIcon
@@ -113,3 +113,6 @@ const Body = () => {
 };
 
 export default Body;
+
+
+

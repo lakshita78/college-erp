@@ -13,10 +13,16 @@ const Layout = ({ children, userRole = 'admin', user }) => {
     avatar: null,
   };
 
-  const currentUser = user || defaultUser;
+  const savedUser = JSON.parse(localStorage.getItem("user")) || JSON.parse(localStorage.getItem("adminUser"));
+  const currentUser = user || (savedUser?.result ? {
+    name: savedUser.result.name,
+    role: savedUser.result.designation || 'Administrator',
+    email: savedUser.result.email,
+    avatar: savedUser.result.avatar
+  } : defaultUser);
 
   return (
-    <div className="min-h-screen bg-light-800 dark:bg-dark-900">
+    <div className="min-h-screen bg-transparent dark:bg-dark-900">
       {/* Sidebar - Desktop */}
       <div className="hidden lg:block">
         <Sidebar userRole={userRole} />

@@ -74,7 +74,7 @@ const LandingPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-dark-900">
+    <div className="min-h-screen bg-dark-900 dark">
       {/* Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-dark-900/80 backdrop-blur-xl border-b border-dark-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -175,6 +175,7 @@ const LandingPage = () => {
                 <Card
                   key={index}
                   padding="lg"
+                  gradient
                   className="text-center hover:border-primary-500/30 transition-all duration-300 group"
                 >
                   <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center mx-auto mb-4 shadow-dark group-hover:scale-110 transition-transform duration-300`}>
